@@ -58,6 +58,27 @@ write_queue = deque()
 last_write = time.time()
 blacklisted_ips = set()
 
+def db_writer():
+    global last_write
+    while True:
+        if write_queue and (len(write_queue) > 10 or time.time() - last_write > 5):
+            batch = list(write_queue)
+            write_queue.clear()
+            try:
+                with get_db() as conn:
+                    conn.executemany("INSERT INTO queries VALUES (NULL, ?, ?, ?, ?, ?)", batch)
+            except DBError as e:
+                send_alert(f"DB Batch Error: {str(e)}")
+            last_write = time.time()
+        time.sleep(0.1)
+
+def db_maintenance():
+    while True:
+        time.sleep(86400)
+        with get_db() as conn:
+            conn.execute("VACUUM")
+            conn.execute("PRAGMA optimize")
+
 async def telegram_worker():
     async with aiohttp.ClientSession() as session:
         while True:
@@ -74,8 +95,8 @@ async def telegram_worker():
             message_queue.task_done()
 
 Thread(target=lambda: asyncio.run(telegram_worker()), daemon=True).start()
-Thread(target=lambda: db_writer(), daemon=True).start()
-Thread(target=lambda: db_maintenance(), daemon=True).start()
+Thread(target=db_writer, daemon=True).start()
+Thread(target=db_maintenance, daemon=True).start()
 
 @app.before_request
 def firewall():
@@ -115,27 +136,6 @@ def init_db():
 
 def log_query(ip, query, response, tokens):
     write_queue.append((datetime.utcnow().isoformat(), ip, query, response, tokens))
-
-def db_writer():
-    global last_write
-    while True:
-        if write_queue and (len(write_queue) > 10 or time.time() - last_write > 5):
-            batch = list(write_queue)
-            write_queue.clear()
-            try:
-                with get_db() as conn:
-                    conn.executemany("INSERT INTO queries VALUES (NULL, ?, ?, ?, ?, ?)", batch)
-            except DBError as e:
-                send_alert(f"DB Batch Error: {str(e)}")
-            last_write = time.time()
-        time.sleep(0.1)
-
-def db_maintenance():
-    while True:
-        time.sleep(86400)
-        with get_db() as conn:
-            conn.execute("VACUUM")
-            conn.execute("PRAGMA optimize")
 
 def log_error(endpoint, msg):
     app.logger.error(f"[ERROR] {endpoint}: {msg}")
