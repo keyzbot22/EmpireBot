@@ -10,6 +10,7 @@ Deprecated==1.2.18
 distro==1.9.0
 Flask==3.1.0
 Flask-Limiter==3.12
+flask-caching==2.1.0
 gunicorn==23.0.0
 h11==0.16.0
 httpcore==1.0.9
@@ -45,3 +46,8 @@ tzlocal==5.3.1
 urllib3==2.4.0
 Werkzeug==3.1.3
 wrapt==1.17.2
+
+# 🔥 Required for advanced EmpireBot features
+aiohttp==3.9.3
+prometheus-client==0.20.0
+gevent==24.2.1
