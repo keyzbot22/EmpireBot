@@ -20,7 +20,7 @@ from flask import Flask, request, jsonify, abort
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt
-from flask_limiter.storage import RedisStorage
+from limits.storage import RedisStorage  # ✅ FIXED IMPORT
 from prometheus_flask_exporter import PrometheusMetrics
 
 # Logging Setup
@@ -142,7 +142,12 @@ async def bot_manager_loop():
                 msg = await queue.get()
                 try:
                     if token := config.BOTS.get(bot):
-                        requests.post(f'https://api.telegram.org/bot{token}/sendMessage', json={'chat_id': msg['chat_id'], 'text': msg['text']}, timeout=3)
+                        import requests
+                        requests.post(
+                            f'https://api.telegram.org/bot{token}/sendMessage',
+                            json={'chat_id': msg['chat_id'], 'text': msg['text']},
+                            timeout=3
+                        )
                 except Exception as e:
                     logger.error(f'Error sending via {bot}: {e}')
         await asyncio.sleep(0.1)
@@ -173,7 +178,7 @@ def admin_only(f):
 def health_check():
     return jsonify({
         "status": "healthy",
-        "bots_online": len([b for b,f in bot_manager.failures.items() if f < 3]),
+        "bots_online": len([b for b, f in bot_manager.failures.items() if f < 3]),
         "db_connected": db.conn.execute("SELECT 1") is not None,
         "redis_connected": limiter.storage.check() if hasattr(limiter.storage, 'check') else True
     })
