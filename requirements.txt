@@ -34,4 +34,6 @@ zope.interface==7.2
 zope.event==5.0
 packaging==25.0
 psutil==7.0.0
+bcrypt==4.1.3
+
 
