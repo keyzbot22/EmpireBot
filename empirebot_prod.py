@@ -1,6 +1,7 @@
 # empirebot_prod.py - EmpireBot v6.3 Enterprise Edition
+
 from gevent import monkey
-monkey.patch_all(ssl=False)  # ⚠️ Must be first for async monkey patching
+monkey.patch_all(ssl=False)  # Must come first for async monkey patching
 
 import os
 import json
@@ -13,6 +14,7 @@ import asyncio
 import bcrypt
 import sqlite3
 import time
+import flask
 from datetime import datetime, timedelta
 from functools import wraps
 
@@ -20,14 +22,18 @@ from flask import Flask, request, jsonify, abort
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt
-from limits.storage import RedisStorage  # ✅ FIXED IMPORT
+from limits.storage import RedisStorage
 from prometheus_flask_exporter import PrometheusMetrics
+from redis import ConnectionPool
 
-# Logging Setup
+# === SAFETY GUARD ===
+assert flask.__version__.startswith('2.'), f"❌ Flask 2.x required (found {flask.__version__})"
+
+# === Logging ===
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# ========== CONFIG ==========
+# === Config ===
 class Config:
     def __init__(self):
         self.SECRET_KEY = os.getenv('SECRET_KEY', os.urandom(32).hex())
@@ -36,7 +42,8 @@ class Config:
         self.ADMIN_PW_HASH = bcrypt.hashpw(os.getenv('ADMIN_PW', 'ChangeMe!').encode('utf-8'), bcrypt.gensalt())
         self.SHOPIFY_API_SECRET = os.getenv('SHOPIFY_API_SECRET')
         self.ADMIN_CHAT_ID = os.getenv('ADMIN_CHAT_ID')
-        self.REDIS_URL = os.getenv('REDIS_URL')
+        self.REDIS_URL = os.getenv('REDIS_URL') or ''
+        assert self.REDIS_URL.startswith('redis://'), "❌ REDIS_URL environment variable not set or malformed"
         self.BOTS = {
             'empire': os.getenv('EMPIRE_BOT_TOKEN'),
             'zariah': os.getenv('ZARIAH_BOT_TOKEN'),
@@ -46,7 +53,7 @@ class Config:
 
 config = Config()
 
-# Flask Setup
+# === Flask App Setup ===
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = config.JWT_SECRET
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)
@@ -55,8 +62,7 @@ app.config['JWT_COOKIE_SECURE'] = True
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 jwt = JWTManager(app)
 
-# Redis + Limiter
-from redis import ConnectionPool
+# === Redis + Limiter ===
 redis_pool = ConnectionPool.from_url(config.REDIS_URL, max_connections=20, socket_keepalive=True, health_check_interval=30)
 limiter = Limiter(
     key_func=get_remote_address,
@@ -66,12 +72,12 @@ limiter = Limiter(
 )
 limiter.init_app(app)
 
-# Metrics
+# === Metrics ===
 metrics = PrometheusMetrics(app)
 metrics.info('app_info', 'EmpireBot Metrics', version='6.3')
 bot_messages = metrics.counter('bot_messages_total', 'Total bot messages sent', labels={'bot': lambda: request.json.get('bot')})
 
-# ========== DATABASE ==========
+# === Database ===
 class Database:
     def __init__(self):
         self.conn = sqlite3.connect(os.getenv('DATABASE_URL', 'empirebot.db'), check_same_thread=False)
@@ -98,7 +104,7 @@ class Database:
 
 db = Database()
 
-# ========== BOT MANAGER ==========
+# === Bot Manager ===
 class FailoverBotManager:
     def __init__(self):
         self.bot_priority = ['zariah', 'empire', 'chatgpt', 'deepseek']
@@ -152,7 +158,7 @@ async def bot_manager_loop():
                     logger.error(f'Error sending via {bot}: {e}')
         await asyncio.sleep(0.1)
 
-# ========== SECURITY ==========
+# === Security ===
 @app.before_request
 def verify_shopify():
     if request.path.startswith('/shopify'):
@@ -173,7 +179,7 @@ def admin_only(f):
         return f(*args, **kwargs)
     return wrapper
 
-# ========== ROUTES ==========
+# === Routes ===
 @app.route('/')
 def health_check():
     return jsonify({
@@ -226,7 +232,7 @@ def handle_errors(e):
         bot_manager._trigger_sms_alert(f"CRITICAL: {type(e).__name__} occurred")
     return jsonify(error=str(e)), 500
 
-# ========== BOOT ==========
+# === Boot ===
 if __name__ == '__main__':
     start_bots()
     app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)))
