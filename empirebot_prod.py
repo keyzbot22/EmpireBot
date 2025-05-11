@@ -1,4 +1,4 @@
-# empirebot_prod.py - Production-Ready EmpireBot v6.3
+# empirebot_prod.py - Production-Ready EmpireBot v6.3 (Render Compatible)
 import os
 import json
 import base64
@@ -14,6 +14,7 @@ from functools import wraps
 
 from flask import Flask, request, jsonify, abort
 from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt
 
 # Initialize logging
@@ -23,8 +24,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Load environment from Render's environment variables
-# No need for python-dotenv in production
+# Configuration using Render environment variables
 class Config:
     def __init__(self):
         self.SECRET_KEY = os.getenv('SECRET_KEY', os.urandom(32).hex())
@@ -49,7 +49,13 @@ config = Config()
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = config.JWT_SECRET
 jwt = JWTManager(app)
-limiter = Limiter(app, key_func=lambda: 'global', default_limits=["200/day"])
+
+# Correct Limiter initialization
+limiter = Limiter(
+    app=app,
+    key_func=get_remote_address,
+    default_limits=["200 per day", "20 per minute"]
+)
 
 # Database setup
 class Database:
@@ -128,7 +134,7 @@ def admin_only(f):
 
 # Routes
 @app.route('/admin/login', methods=['POST'])
-@limiter.limit("5/minute")
+@limiter.limit("5 per minute")
 def login():
     data = request.get_json()
     if (data.get('username') == config.ADMIN_USER and
