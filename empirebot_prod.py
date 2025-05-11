@@ -22,7 +22,6 @@ from flask import Flask, request, jsonify, abort
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt
-from limits.storage import RedisStorage
 from prometheus_flask_exporter import PrometheusMetrics
 
 # Safety check
@@ -61,10 +60,10 @@ app.config['JWT_COOKIE_SECURE'] = True
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 jwt = JWTManager(app)
 
-# Limiter with Redis URI
+# Limiter using storage_uri
 limiter = Limiter(
     key_func=get_remote_address,
-    storage=RedisStorage(uri=config.REDIS_URL),
+    storage_uri=config.REDIS_URL,
     strategy="moving-window",
     default_limits=["500/hour", "50/minute"]
 )
