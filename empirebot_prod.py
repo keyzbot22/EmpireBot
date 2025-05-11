@@ -15,6 +15,7 @@ from sqlite3 import Error as DBError
 from prometheus_client import start_http_server, Counter, Gauge
 from queue import Queue, deque
 from threading import Thread
+import logging
 from logging.handlers import RotatingFileHandler
 from gevent import monkey
 from hashlib import md5
