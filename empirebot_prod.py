@@ -1,4 +1,4 @@
-# empirebot_prod.py - EmpireBot v6.3 Final Fix
+# empirebot_prod.py - EmpireBot v6.3 Final Stable Release
 
 from gevent import monkey
 monkey.patch_all(ssl=False)
@@ -15,6 +15,7 @@ import bcrypt
 import sqlite3
 import time
 import flask
+import aiohttp
 from datetime import datetime, timedelta
 from functools import wraps
 
@@ -24,8 +25,8 @@ from flask_limiter.util import get_remote_address
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt
 from prometheus_flask_exporter import PrometheusMetrics
 
-# Ensure Flask 2.x
-assert flask.__version__.startswith('2.'), f"❌ Flask 2.x required (found {flask.__version__})"
+# Check version
+assert flask.__version__.startswith('2.'), f"Flask 2.x required (found {flask.__version__})"
 
 # Logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -40,8 +41,7 @@ class Config:
         self.ADMIN_PW_HASH = bcrypt.hashpw(os.getenv('ADMIN_PW', 'ChangeMe!').encode('utf-8'), bcrypt.gensalt())
         self.SHOPIFY_API_SECRET = os.getenv('SHOPIFY_API_SECRET')
         self.ADMIN_CHAT_ID = os.getenv('ADMIN_CHAT_ID')
-        self.REDIS_URL = os.getenv('REDIS_URL') or ''
-        assert self.REDIS_URL.startswith('redis://') or self.REDIS_URL.startswith('rediss://'), "❌ REDIS_URL not valid"
+        self.REDIS_URL = os.getenv('REDIS_URL')
         self.BOTS = {
             'empire': os.getenv('EMPIRE_BOT_TOKEN'),
             'zariah': os.getenv('ZARIAH_BOT_TOKEN'),
@@ -60,14 +60,23 @@ app.config['JWT_COOKIE_SECURE'] = True
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 jwt = JWTManager(app)
 
-# === Limiter (uses Redis URI) ===
-limiter = Limiter(
-    key_func=get_remote_address,
-    storage_uri=config.REDIS_URL,
-    strategy="moving-window",
-    default_limits=["500/hour", "50/minute"]
-)
-limiter.init_app(app)
+# === Rate Limiting (with Redis fallback) ===
+if config.REDIS_URL and "redis" in config.REDIS_URL:
+    limiter = Limiter(
+        app=app,
+        key_func=get_remote_address,
+        storage_uri=config.REDIS_URL,
+        strategy="moving-window",
+        default_limits=["500/hour", "50/minute"]
+    )
+else:
+    limiter = Limiter(
+        app=app,
+        key_func=get_remote_address,
+        storage="memory://",
+        default_limits=["200/hour", "20/minute"]
+    )
+    logger.warning("Running with in-memory rate limiting (Redis not configured)")
 
 # === Metrics ===
 metrics = PrometheusMetrics(app)
@@ -134,29 +143,36 @@ class FailoverBotManager:
 bot_manager = FailoverBotManager()
 
 def start_bots():
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.create_task(bot_manager_loop())
-    threading.Thread(target=loop.run_forever, daemon=True).start()
+    def run():
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(bot_manager_loop())
+    threading.Thread(target=run, daemon=True).start()
 
 async def bot_manager_loop():
     while True:
-        for bot, queue in bot_manager.queues.items():
-            if not queue.empty():
-                msg = await queue.get()
-                try:
+        try:
+            for bot, queue in bot_manager.queues.items():
+                if not queue.empty():
+                    msg = await queue.get()
                     if token := config.BOTS.get(bot):
-                        import requests
-                        requests.post(
-                            f'https://api.telegram.org/bot{token}/sendMessage',
-                            json={'chat_id': msg['chat_id'], 'text': msg['text']},
-                            timeout=3
-                        )
-                except Exception as e:
-                    logger.error(f'Error sending via {bot}: {e}')
-        await asyncio.sleep(0.1)
+                        try:
+                            async with aiohttp.ClientSession() as session:
+                                async with session.post(
+                                    f'https://api.telegram.org/bot{token}/sendMessage',
+                                    json={'chat_id': msg['chat_id'], 'text': msg['text']},
+                                    timeout=3
+                                ) as resp:
+                                    if resp.status != 200:
+                                        logger.error(f'Bot {bot} failed: {await resp.text()}')
+                        except Exception as e:
+                            logger.error(f'Error sending via {bot}: {e}')
+            await asyncio.sleep(0.1)
+        except Exception as e:
+            logger.error(f"Bot manager error: {e}")
+            await asyncio.sleep(1)
 
-# === Security ===
+# === Shopify Webhook Verification ===
 @app.before_request
 def verify_shopify():
     if request.path.startswith('/shopify'):
@@ -180,12 +196,16 @@ def admin_only(f):
 # === Routes ===
 @app.route('/')
 def health_check():
-    return jsonify({
-        "status": "healthy",
-        "bots_online": len([b for b, f in bot_manager.failures.items() if f < 3]),
-        "db_connected": db.conn.execute("SELECT 1") is not None,
-        "redis_connected": limiter.storage.check() if hasattr(limiter.storage, 'check') else True
-    })
+    try:
+        return jsonify({
+            "status": "healthy",
+            "bots_online": len([b for b,f in bot_manager.failures.items() if f < 3]),
+            "db_connected": db.conn.execute("SELECT 1").fetchone()[0] == 1,
+            "redis_connected": "redis" in str(limiter.storage).lower(),
+            "version": "6.3"
+        })
+    except Exception as e:
+        return jsonify({"status": "degraded", "error": str(e)}), 500
 
 @app.route('/admin/login', methods=['POST'])
 @limiter.limit("5/minute")
