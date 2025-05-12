@@ -1,4 +1,4 @@
-# empirebot_prod.py - EmpireBot v6.3 Enterprise Edition
+# empirebot_prod.py - EmpireBot v6.3 Final Fix
 
 from gevent import monkey
 monkey.patch_all(ssl=False)
@@ -24,7 +24,7 @@ from flask_limiter.util import get_remote_address
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt
 from prometheus_flask_exporter import PrometheusMetrics
 
-# Safety check
+# Ensure Flask 2.x
 assert flask.__version__.startswith('2.'), f"❌ Flask 2.x required (found {flask.__version__})"
 
 # Logging
@@ -41,7 +41,7 @@ class Config:
         self.SHOPIFY_API_SECRET = os.getenv('SHOPIFY_API_SECRET')
         self.ADMIN_CHAT_ID = os.getenv('ADMIN_CHAT_ID')
         self.REDIS_URL = os.getenv('REDIS_URL') or ''
-        assert self.REDIS_URL.startswith('redis://'), "❌ REDIS_URL not set or invalid"
+        assert self.REDIS_URL.startswith('redis://') or self.REDIS_URL.startswith('rediss://'), "❌ REDIS_URL not valid"
         self.BOTS = {
             'empire': os.getenv('EMPIRE_BOT_TOKEN'),
             'zariah': os.getenv('ZARIAH_BOT_TOKEN'),
@@ -51,7 +51,7 @@ class Config:
 
 config = Config()
 
-# Flask App
+# === Flask App ===
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = config.JWT_SECRET
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)
@@ -60,7 +60,7 @@ app.config['JWT_COOKIE_SECURE'] = True
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 jwt = JWTManager(app)
 
-# Limiter using storage_uri
+# === Limiter (uses Redis URI) ===
 limiter = Limiter(
     key_func=get_remote_address,
     storage_uri=config.REDIS_URL,
@@ -69,12 +69,12 @@ limiter = Limiter(
 )
 limiter.init_app(app)
 
-# Prometheus metrics
+# === Metrics ===
 metrics = PrometheusMetrics(app)
 metrics.info('app_info', 'EmpireBot Metrics', version='6.3')
 bot_messages = metrics.counter('bot_messages_total', 'Total bot messages sent', labels={'bot': lambda: request.json.get('bot')})
 
-# Database
+# === Database ===
 class Database:
     def __init__(self):
         self.conn = sqlite3.connect(os.getenv('DATABASE_URL', 'empirebot.db'), check_same_thread=False)
@@ -101,7 +101,7 @@ class Database:
 
 db = Database()
 
-# Bot Manager
+# === Bot Manager ===
 class FailoverBotManager:
     def __init__(self):
         self.bot_priority = ['zariah', 'empire', 'chatgpt', 'deepseek']
@@ -134,9 +134,10 @@ class FailoverBotManager:
 bot_manager = FailoverBotManager()
 
 def start_bots():
-    def run():
-        asyncio.run(bot_manager_loop())
-    threading.Thread(target=run, daemon=True).start()
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.create_task(bot_manager_loop())
+    threading.Thread(target=loop.run_forever, daemon=True).start()
 
 async def bot_manager_loop():
     while True:
@@ -155,7 +156,7 @@ async def bot_manager_loop():
                     logger.error(f'Error sending via {bot}: {e}')
         await asyncio.sleep(0.1)
 
-# Security
+# === Security ===
 @app.before_request
 def verify_shopify():
     if request.path.startswith('/shopify'):
@@ -176,7 +177,7 @@ def admin_only(f):
         return f(*args, **kwargs)
     return wrapper
 
-# Routes
+# === Routes ===
 @app.route('/')
 def health_check():
     return jsonify({
@@ -229,7 +230,7 @@ def handle_errors(e):
         bot_manager._trigger_sms_alert(f"CRITICAL: {type(e).__name__} occurred")
     return jsonify(error=str(e)), 500
 
-# Boot
+# === Boot ===
 if __name__ == '__main__':
     start_bots()
     app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)))
