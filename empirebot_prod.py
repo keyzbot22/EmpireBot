@@ -23,14 +23,11 @@ from flask_limiter.util import get_remote_address
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt
 from prometheus_flask_exporter import PrometheusMetrics
 
-# Version check
-assert flask.__version__.startswith("2."), f"❌ Flask 2.x required, found {flask.__version__}"
+assert flask.__version__.startswith("2."), f"Flask 2.x required, found {flask.__version__}"
 
-# Logging setup
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# === Config ===
 class Config:
     def __init__(self):
         self.SECRET_KEY = os.getenv("SECRET_KEY", os.urandom(32).hex())
@@ -49,7 +46,6 @@ class Config:
 
 config = Config()
 
-# === Flask Setup ===
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = config.JWT_SECRET
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)
@@ -58,7 +54,6 @@ app.config['JWT_COOKIE_SECURE'] = True
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 jwt = JWTManager(app)
 
-# === Rate Limiting (with fallback) ===
 try:
     limiter = Limiter(
         app=app,
@@ -71,12 +66,10 @@ except Exception as e:
     logger.error(f"Rate limiter setup failed: {e}")
     limiter = Limiter(app=app, key_func=get_remote_address, storage="memory://")
 
-# === Metrics ===
 metrics = PrometheusMetrics(app)
 metrics.info("app_info", "EmpireBot v6.3.1", version="6.3.1")
 bot_messages = metrics.counter("bot_messages_total", "Total bot messages sent", labels={"bot": lambda: request.json.get("bot")})
 
-# === DB ===
 class Database:
     def __init__(self):
         self.conn = sqlite3.connect(os.getenv("DATABASE_URL", "empirebot.db"), check_same_thread=False)
@@ -103,29 +96,30 @@ class Database:
 
 db = Database()
 
-# === Bot Manager ===
 class BotManager:
     def __init__(self, loop):
         self.loop = loop
         self.queues = {bot: asyncio.Queue() for bot in config.BOTS}
-        self.session = aiohttp.ClientSession(loop=loop)
+        self.session = None
 
-    async def run_forever(self):
-        while True:
-            try:
+    async def run(self):
+        self.session = aiohttp.ClientSession()
+        try:
+            while True:
                 await self.process_queues()
                 await asyncio.sleep(0.1)
-            except Exception as e:
-                logger.error(f"Bot manager error: {e}")
-                await asyncio.sleep(1)
+        except Exception as e:
+            logger.error(f"Bot manager loop error: {e}")
+        finally:
+            await self.session.close()
 
     async def process_queues(self):
         for bot, queue in self.queues.items():
             if not queue.empty():
                 msg = await queue.get()
-                await self.send_message(bot, msg)
+                await self.send(bot, msg)
 
-    async def send_message(self, bot, msg):
+    async def send(self, bot, msg):
         if token := config.BOTS.get(bot):
             try:
                 async with self.session.post(
@@ -134,7 +128,7 @@ class BotManager:
                     timeout=3
                 ) as resp:
                     if resp.status != 200:
-                        logger.error(f"Bot {bot} failed: {await resp.text()}")
+                        logger.error(f"{bot} failed: {await resp.text()}")
             except Exception as e:
                 logger.error(f"Error sending via {bot}: {e}")
 
@@ -146,15 +140,11 @@ def start_bots():
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         manager = BotManager(loop)
-        try:
-            loop.run_until_complete(manager.run_forever())
-        finally:
-            loop.run_until_complete(manager.session.close())
-            loop.close()
+        loop.create_task(manager.run())
+        loop.run_forever()
 
     threading.Thread(target=run, daemon=True).start()
 
-# === Security ===
 @app.before_request
 def verify_shopify():
     if request.path.startswith("/shopify"):
@@ -175,7 +165,6 @@ def admin_only(f):
         return f(*args, **kwargs)
     return wrapper
 
-# === Routes ===
 @app.route("/")
 def health_check():
     return jsonify({
@@ -227,7 +216,6 @@ def handle_errors(e):
     logger.error(f"Unhandled exception: {str(e)}")
     return jsonify(error=str(e)), 500
 
-# === Boot ===
 if __name__ == "__main__":
     start_bots()
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)))
