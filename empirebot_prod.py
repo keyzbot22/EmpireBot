@@ -1,6 +1,5 @@
-
 from gevent import monkey
-monkey.patch_all(ssl=False, thread=False)  # Prevent duplicate monkey patching
+monkey.patch_all(ssl=False, thread=False)
 
 import os
 import json
@@ -16,17 +15,17 @@ from queue import Queue
 from datetime import datetime, timedelta
 from functools import wraps
 
-from flask import Flask, request, jsonify, abort
+from flask import Flask, request, jsonify, abort, render_template
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from prometheus_flask_exporter import PrometheusMetrics
 
-# Logging Setup
+# === Logging ===
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# ========== CONFIG ==========
+# === Config ===
 class Config:
     def __init__(self):
         self.SECRET_KEY = os.getenv('SECRET_KEY', os.urandom(32).hex())
@@ -46,8 +45,8 @@ class Config:
 
 config = Config()
 
-# Flask Setup
-app = Flask(__name__)
+# === Flask ===
+app = Flask(__name__, template_folder="templates")
 app.config['JWT_SECRET_KEY'] = config.JWT_SECRET
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)
 app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=30)
@@ -55,18 +54,15 @@ app.config['JWT_COOKIE_SECURE'] = True
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 jwt = JWTManager(app)
 
-# Rate Limiter Setup (Redis or Memory fallback)
+# === Rate Limiter ===
 try:
     if config.REDIS_URL and config.REDIS_URL.startswith("redis://"):
         from redis import Redis
         redis_client = Redis.from_url(config.REDIS_URL)
-        redis_client.ping()  # Verify Redis is reachable
+        redis_client.ping()
         limiter = Limiter(
-            app=app,
-            key_func=get_remote_address,
-            storage_uri=config.REDIS_URL,
-            strategy="moving-window",
-            default_limits=["500/hour", "50/minute"]
+            app=app, key_func=get_remote_address, storage_uri=config.REDIS_URL,
+            strategy="moving-window", default_limits=["500/hour", "50/minute"]
         )
         logger.info("✅ Redis rate limiting enabled")
     else:
@@ -74,19 +70,16 @@ try:
 except Exception as e:
     logger.warning(f"⚠️ Using in-memory rate limiting: {str(e)}")
     limiter = Limiter(
-        app=app,
-        key_func=get_remote_address,
-        storage_uri="memory://",
-        strategy="moving-window",
-        default_limits=["200/hour", "20/minute"]
+        app=app, key_func=get_remote_address, storage_uri="memory://",
+        strategy="moving-window", default_limits=["200/hour", "20/minute"]
     )
 
-# Prometheus Metrics
+# === Metrics ===
 metrics = PrometheusMetrics(app)
 metrics.info('app_info', 'EmpireBot Metrics', version='6.3.2')
 bot_messages = metrics.counter('bot_messages_total', 'Total bot messages sent', labels={'bot': lambda: request.json.get('bot')})
 
-# ========== DATABASE ==========
+# === Database ===
 class Database:
     def __init__(self):
         self.conn = sqlite3.connect(os.getenv('DATABASE_URL', 'empirebot.db'), check_same_thread=False)
@@ -102,14 +95,16 @@ class Database:
                 fraud_score REAL
             )
         ''')
-
-    def create_backup(self):
-        backup_name = f"empirebot_{datetime.now().strftime('%Y%m%d_%H%M')}.backup"
-        self.conn.execute(f"VACUUM INTO '{backup_name}'")
+        self.conn.execute('''
+            CREATE TABLE IF NOT EXISTS contracts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT, source TEXT, link TEXT, due_date TEXT
+            )
+        ''')
 
 db = Database()
 
-# ========== BOT MANAGER ==========
+# === Bot Manager ===
 class BotManager:
     def __init__(self):
         self.queues = {bot: Queue() for bot in config.BOTS}
@@ -130,23 +125,15 @@ class BotManager:
 
     def _process_queues(self):
         while self._running:
-            try:
-                for bot, queue in self.queues.items():
-                    if not queue.empty():
-                        msg = queue.get()
-                        self._send_message(bot, msg)
-                time.sleep(0.1)
-            except Exception as e:
-                logger.error(f"Queue processing error: {e}")
-                time.sleep(1)
-
-    def stop(self):
-        self._running = False
-        self.thread.join()
+            for bot, queue in self.queues.items():
+                if not queue.empty():
+                    msg = queue.get()
+                    self._send_message(bot, msg)
+            time.sleep(0.1)
 
 bot_manager = BotManager()
 
-# ========== SECURITY ==========
+# === Security ===
 @app.before_request
 def verify_shopify():
     if request.path.startswith('/shopify'):
@@ -167,7 +154,7 @@ def admin_only(f):
         return f(*args, **kwargs)
     return wrapper
 
-# ========== ROUTES ==========
+# === Routes ===
 @app.route('/')
 def health_check():
     return jsonify({
@@ -175,7 +162,7 @@ def health_check():
         "version": "6.3.2",
         "rate_limiting": "memory" if "memory" in str(limiter.storage).lower() else "redis",
         "bot_thread": bot_manager.thread.is_alive(),
-        "message_queues": {k: v.qsize() for k,v in bot_manager.queues.items()}
+        "message_queues": {k: v.qsize() for k, v in bot_manager.queues.items()}
     })
 
 @app.route('/admin/login', methods=['POST'])
@@ -197,10 +184,14 @@ def shopify_webhook():
     if amount > 5000:
         fraud_score += 0.4
     try:
-        db.conn.execute('INSERT INTO orders (order_id, amount, timestamp, fraud_score) VALUES (?, ?, ?, ?)', (order_id, amount, datetime.utcnow().isoformat(), fraud_score))
+        db.conn.execute('INSERT INTO orders (order_id, amount, timestamp, fraud_score) VALUES (?, ?, ?, ?)',
+                        (order_id, amount, datetime.utcnow().isoformat(), fraud_score))
     except sqlite3.IntegrityError:
         return jsonify(status='duplicate'), 200
-    bot_manager.queues['empire'].put({ 'chat_id': config.ADMIN_CHAT_ID, 'text': f'💰 Order: ${amount:.2f} | Risk: {fraud_score:.0%}' })
+    bot_manager.queues['empire'].put({
+        'chat_id': config.ADMIN_CHAT_ID,
+        'text': f'💰 Order: ${amount:.2f} | Risk: {fraud_score:.0%}'
+    })
     return jsonify(status='processed')
 
 @app.route('/bot/send', methods=['POST'])
@@ -214,23 +205,16 @@ def send_bot_message():
         return jsonify(status='sent')
     abort(400)
 
-@app.errorhandler(Exception)
-def handle_errors(e):
-    logger.error(f"Unhandled exception: {str(e)}")
-    return jsonify(error=str(e)), 500
-
-# ========== BOOT ==========
 @app.route('/contracts-dashboard')
 def contracts_dashboard():
     try:
         contracts_scraped = db.conn.execute("SELECT COUNT(*) FROM contracts").fetchone()[0]
     except Exception:
-        contracts_scraped = 0  # fallback if table doesn't exist yet
-
+        contracts_scraped = 0
     return jsonify({
         "current_stage": "Phase 1 - Data Harvesting",
         "contracts_scraped": contracts_scraped,
-        "alerts": [],  # Replace with real alert fetch logic if added
+        "alerts": [],
         "next_steps": [
             "✅ SAM.gov registration in progress",
             "✅ WOSB checklist generated",
@@ -239,6 +223,8 @@ def contracts_dashboard():
         "timestamp": datetime.utcnow().isoformat() + "Z"
     })
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)))
+@app.route('/contracts-panel')
+def contracts_panel():
+    try:
+        contracts = db.conn.execute("SELECT * ​:contentReference[oaicite:0]{index=0}​
 
