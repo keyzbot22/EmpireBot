@@ -60,24 +60,17 @@ try:
         from redis import Redis
         redis_client = Redis.from_url(config.REDIS_URL)
         redis_client.ping()
-        limiter = Limiter(
-            app=app, key_func=get_remote_address, storage_uri=config.REDIS_URL,
-            strategy="moving-window", default_limits=["500/hour", "50/minute"]
-        )
+        limiter = Limiter(app=app, key_func=get_remote_address, storage_uri=config.REDIS_URL, strategy="moving-window", default_limits=["500/hour", "50/minute"])
         logger.info("✅ Redis rate limiting enabled")
     else:
         raise ValueError("REDIS_URL missing or invalid")
 except Exception as e:
     logger.warning(f"⚠️ Using in-memory rate limiting: {str(e)}")
-    limiter = Limiter(
-        app=app, key_func=get_remote_address, storage_uri="memory://",
-        strategy="moving-window", default_limits=["200/hour", "20/minute"]
-    )
+    limiter = Limiter(app=app, key_func=get_remote_address, storage_uri="memory://", strategy="moving-window", default_limits=["200/hour", "20/minute"])
 
 # === Metrics ===
 metrics = PrometheusMetrics(app)
 metrics.info('app_info', 'EmpireBot Metrics', version='6.3.2')
-bot_messages = metrics.counter('bot_messages_total', 'Total bot messages sent', labels={'bot': lambda: request.json.get('bot')})
 
 # === Database ===
 class Database:
@@ -98,9 +91,34 @@ class Database:
         self.conn.execute('''
             CREATE TABLE IF NOT EXISTS contracts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                title TEXT, source TEXT, link TEXT, due_date TEXT
+                title TEXT,
+                source TEXT,
+                link TEXT,
+                due_date TEXT
             )
         ''')
+        self.conn.execute('''
+            CREATE TABLE IF NOT EXISTS contract_alerts (
+                id INTEGER PRIMARY KEY,
+                contract_id INTEGER,
+                alert_type TEXT,
+                timestamp TEXT,
+                FOREIGN KEY(contract_id) REFERENCES contracts(id)
+            )
+        ''')
+        self.conn.commit()
+
+    def safe_execute(self, query, params=()):
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(query, params)
+            if query.strip().lower().startswith("select"):
+                return cursor.fetchall()
+            self.conn.commit()
+            return True
+        except sqlite3.Error as e:
+            logger.error(f"DB Error: {e} | Query: {query}")
+            return []
 
 db = Database()
 
@@ -121,7 +139,7 @@ class BotManager:
                     timeout=3
                 )
             except Exception as e:
-                logger.error(f'Error sending via {bot}: {e}')
+                logger.error(f'Bot Error [{bot}]: {e}')
 
     def _process_queues(self):
         while self._running:
@@ -138,11 +156,9 @@ bot_manager = BotManager()
 def verify_shopify():
     if request.path.startswith('/shopify'):
         timestamp = request.headers.get('X-Shopify-Webhook-Timestamp')
-        if not timestamp or abs(time.time() - float(timestamp)) > 300:
-            abort(403)
         hmac_header = request.headers.get('X-Shopify-Hmac-Sha256', '')
         digest = base64.b64encode(hmac.new(config.SHOPIFY_API_SECRET.encode(), request.data, hashlib.sha256).digest()).decode()
-        if not hmac.compare_digest(digest, hmac_header):
+        if not timestamp or abs(time.time() - float(timestamp)) > 300 or not hmac.compare_digest(digest, hmac_header):
             abort(403)
 
 def admin_only(f):
@@ -160,50 +176,9 @@ def health_check():
     return jsonify({
         "status": "running",
         "version": "6.3.2",
-        "rate_limiting": "memory" if "memory" in str(limiter.storage).lower() else "redis",
         "bot_thread": bot_manager.thread.is_alive(),
         "message_queues": {k: v.qsize() for k, v in bot_manager.queues.items()}
     })
-
-@app.route('/admin/login', methods=['POST'])
-@limiter.limit("5/minute")
-def login():
-    data = request.get_json()
-    if data.get('username') == config.ADMIN_USER and data.get('password', '').encode('utf-8') == config.ADMIN_PW_HASH:
-        return jsonify(token=create_access_token(identity=config.ADMIN_USER, additional_claims={'is_admin': True}))
-    abort(401)
-
-@app.route('/shopify/webhook', methods=['POST'])
-def shopify_webhook():
-    data = request.get_json()
-    order_id = data.get('id')
-    amount = float(data.get('total_price', 0))
-    fraud_score = 0.0
-    if data.get('billing_address', {}).get('country') != data.get('shipping_address', {}).get('country'):
-        fraud_score += 0.3
-    if amount > 5000:
-        fraud_score += 0.4
-    try:
-        db.conn.execute('INSERT INTO orders (order_id, amount, timestamp, fraud_score) VALUES (?, ?, ?, ?)',
-                        (order_id, amount, datetime.utcnow().isoformat(), fraud_score))
-    except sqlite3.IntegrityError:
-        return jsonify(status='duplicate'), 200
-    bot_manager.queues['empire'].put({
-        'chat_id': config.ADMIN_CHAT_ID,
-        'text': f'💰 Order: ${amount:.2f} | Risk: {fraud_score:.0%}'
-    })
-    return jsonify(status='processed')
-
-@app.route('/bot/send', methods=['POST'])
-@admin_only
-def send_bot_message():
-    data = request.get_json()
-    bot = data.get('bot')
-    message = {'chat_id': data.get('chat_id', config.ADMIN_CHAT_ID), 'text': data['text']}
-    if bot in bot_manager.queues:
-        bot_manager.queues[bot].put(message)
-        return jsonify(status='sent')
-    abort(400)
 
 @app.route('/contracts-dashboard')
 def contracts_dashboard():
@@ -226,5 +201,24 @@ def contracts_dashboard():
 @app.route('/contracts-panel')
 def contracts_panel():
     try:
-        contracts = db.conn.execute("SELECT * ​:contentReference[oaicite:0]{index=0}​
+        contracts = db.conn.execute("""
+            SELECT id, title, source, link, due_date 
+            FROM contracts 
+            WHERE source IS NOT NULL 
+            ORDER BY due_date ASC 
+            LIMIT 20
+        """).fetchall()
+    except Exception as e:
+        logger.error(f"Contract panel error: {e}")
+        contracts = []
+    
+    return render_template("contracts.html", 
+                         contracts=contracts,
+                         last_updated=datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC'))
+
+# === Boot ===
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)))
+
+
 
