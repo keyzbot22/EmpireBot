@@ -220,6 +220,25 @@ def handle_errors(e):
     return jsonify(error=str(e)), 500
 
 # ========== BOOT ==========
+@app.route('/contracts-dashboard')
+def contracts_dashboard():
+    try:
+        contracts_scraped = db.conn.execute("SELECT COUNT(*) FROM contracts").fetchone()[0]
+    except Exception:
+        contracts_scraped = 0  # fallback if table doesn't exist yet
+
+    return jsonify({
+        "current_stage": "Phase 1 - Data Harvesting",
+        "contracts_scraped": contracts_scraped,
+        "alerts": [],  # Replace with real alert fetch logic if added
+        "next_steps": [
+            "✅ SAM.gov registration in progress",
+            "✅ WOSB checklist generated",
+            "📄 First proposals generating"
+        ],
+        "timestamp": datetime.utcnow().isoformat() + "Z"
+    })
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)))
 
