@@ -179,6 +179,14 @@ def health_check():
         "bot_thread": bot_manager.thread.is_alive(),
         "message_queues": {k: v.qsize() for k, v in bot_manager.queues.items()}
     })
+from flask import send_file
+
+@app.route('/admin/backup', methods=['POST'])
+@admin_only
+def backup_db():
+    backup_file = f"backup-{datetime.now().date()}.db"
+    os.system(f"sqlite3 empirebot.db .dump > {backup_file}")
+    return send_file(backup_file, as_attachment=True)
 
 @app.route('/contracts-dashboard')
 def contracts_dashboard():
