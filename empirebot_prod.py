@@ -1,3 +1,5 @@
+# empirebot_prod.py
+
 import os
 import json
 import base64
@@ -5,14 +7,11 @@ import hmac
 import hashlib
 import logging
 import sqlite3
-import threading
 import time
-import requests
-from queue import Queue
 from datetime import datetime, timedelta
 from functools import wraps
 
-from flask import Flask, request, jsonify, abort, render_template, send_file
+from flask import Flask, request, jsonify, abort, render_template
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -32,16 +31,60 @@ class Config:
         self.ADMIN_PW_HASH = self.ADMIN_PW.encode('utf-8')
         self.SHOPIFY_API_SECRET = os.getenv('SHOPIFY_API_SECRET')
         self.ADMIN_CHAT_ID = os.getenv('ADMIN_CHAT_ID', '1477503070')
-        self.BOTS = {
-            'empire': os.getenv('EMPIRE_BOT_TOKEN'),
-            'zariah': os.getenv('ZARIAH_BOT_TOKEN'),
-            'chatgpt': os.getenv('CHATGPT_BOT_TOKEN'),
-            'deepseek': os.getenv('DEEPSEEK_BOT_TOKEN')
-        }
+
+        # Multi-bot fallback support
+        self.BOT_TOKENS = [
+            os.getenv('EMPIRE_BOT_TOKEN'),
+            os.getenv('ZARIAH_BOT_TOKEN'),
+            os.getenv('KEYCONTROL_BOT_TOKEN'),
+            os.getenv('DEEPSEEK_BOT_TOKEN'),
+            os.getenv('CHATGPT_BOT_TOKEN')
+        ]
 
 config = Config()
 
-# === Flask ===
+# === SafeRequest Handler ===
+class SafeRequest:
+    def __init__(self):
+        self.session = requests.Session()
+        self.session.headers.update({'User-Agent': 'EmpireBot/2.0'})
+
+    def post(self, url, payload, max_retries=3, timeout=5):
+        last_error = None
+        for attempt in range(max_retries):
+            try:
+                response = self.session.post(url, json=payload, timeout=timeout)
+                if response.status_code < 500:
+                    return response.json()
+            except Exception as e:
+                last_error = str(e)
+                time.sleep(2 ** attempt)
+        return {"error": "request_failed", "message": last_error, "attempts": max_retries}
+
+# === AlertManager ===
+class AlertManager:
+    def __init__(self):
+        self.http = SafeRequest()
+        self.bots = [token for token in config.BOT_TOKENS if token]
+
+    def send(self, message):
+        for token in self.bots:
+            response = self._send_safe(token, message)
+            if response.get('ok'):
+                return response
+        return {"error": "all_bots_failed"}
+
+    def _send_safe(self, token, message):
+        return self.http.post(
+            f"https://api.telegram.org/bot{token}/sendMessage",
+            {
+                "chat_id": config.ADMIN_CHAT_ID,
+                "text": message,
+                "parse_mode": "HTML"
+            }
+        )
+
+# === Flask App ===
 app = Flask(__name__, template_folder="templates")
 app.config['JWT_SECRET_KEY'] = config.JWT_SECRET
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)
@@ -57,199 +100,45 @@ try:
         from redis import Redis
         redis_client = Redis.from_url(redis_url)
         redis_client.ping()
-        limiter = Limiter(app=app, key_func=get_remote_address, storage_uri=redis_url, strategy="moving-window", default_limits=["500/hour", "50/minute"])
+        limiter = Limiter(app=app, key_func=get_remote_address, storage_uri=redis_url,
+                          strategy="moving-window", default_limits=["500/hour", "50/minute"])
         logger.info("✅ Redis rate limiting enabled")
     else:
         raise ValueError("REDIS_URL missing or invalid")
 except Exception as e:
     logger.warning(f"⚠️ Using in-memory rate limiting: {str(e)}")
-    limiter = Limiter(app=app, key_func=get_remote_address, storage_uri="memory://", strategy="moving-window", default_limits=["200/hour", "20/minute"])
+    limiter = Limiter(app=app, key_func=get_remote_address, storage_uri="memory://",
+                      strategy="moving-window", default_limits=["200/hour", "20/minute"])
 
 # === Metrics ===
 metrics = PrometheusMetrics(app)
-metrics.info('app_info', 'EmpireBot Metrics', version='6.3.2')
+metrics.info('app_info', 'EmpireBot Metrics', version='6.3.3')
 
-# === Database ===
-class Database:
-    def __init__(self):
-        self.conn = sqlite3.connect(os.getenv('DATABASE_URL', 'empirebot.db'), check_same_thread=False)
-        self._init_db()
-
-    def _init_db(self):
-        self.conn.execute('''
-            CREATE TABLE IF NOT EXISTS orders (
-                id INTEGER PRIMARY KEY,
-                order_id TEXT UNIQUE,
-                amount REAL,
-                timestamp TEXT,
-                fraud_score REAL
-            )
-        ''')
-        self.conn.execute('''
-            CREATE TABLE IF NOT EXISTS contracts (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                title TEXT,
-                source TEXT,
-                link TEXT,
-                due_date TEXT
-            )
-        ''')
-        self.conn.execute('''
-            CREATE TABLE IF NOT EXISTS contract_alerts (
-                id INTEGER PRIMARY KEY,
-                contract_id INTEGER,
-                alert_type TEXT,
-                timestamp TEXT,
-                FOREIGN KEY(contract_id) REFERENCES contracts(id)
-            )
-        ''')
-        self.conn.commit()
-
-    def safe_execute(self, query, params=()):
-        try:
-            cursor = self.conn.cursor()
-            cursor.execute(query, params)
-            if query.strip().lower().startswith("select"):
-                return cursor.fetchall()
-            self.conn.commit()
-            return True
-        except sqlite3.Error as e:
-            logger.error(f"DB Error: {e} | Query: {query}")
-            return []
-
-db = Database()
-
-# === Bot Manager ===
-class BotManager:
-    def __init__(self):
-        self.queues = {bot: Queue() for bot in config.BOTS}
-        self._running = True
-        self.thread = threading.Thread(target=self._process_queues, daemon=True)
-        self.thread.start()
-
-    def _send_message(self, bot, msg):
-        token = config.BOTS.get(bot)
-        chat_id = msg.get("chat_id")
-        text = msg.get("text")
-
-        for attempt in range(3):
-            try:
-                response = requests.post(
-                    f"https://api.telegram.org/bot{token}/sendMessage",
-                    json={"chat_id": chat_id, "text": text},
-                    timeout=5
-                )
-                if response.status_code == 200 and response.json().get("ok"):
-                    logger.info(f"[✓] Telegram message sent (attempt {attempt + 1})")
-                    break
-            except Exception as e:
-                logger.warning(f"[!] Telegram send failed (attempt {attempt + 1}): {e}")
-                time.sleep(2 ** attempt)
-
-    def _process_queues(self):
-        while self._running:
-            for bot, queue in self.queues.items():
-                if not queue.empty():
-                    msg = queue.get()
-                    self._send_message(bot, msg)
-            time.sleep(0.1)
-
-bot_manager = BotManager()
-
-# === Security ===
-@app.before_request
-def verify_shopify():
-    if request.path.startswith('/shopify'):
-        timestamp = request.headers.get('X-Shopify-Webhook-Timestamp')
-        hmac_header = request.headers.get('X-Shopify-Hmac-Sha256', '')
-        digest = base64.b64encode(hmac.new(config.SHOPIFY_API_SECRET.encode(), request.data, hashlib.sha256).digest()).decode()
-        if not timestamp or abs(time.time() - float(timestamp)) > 300 or not hmac.compare_digest(digest, hmac_header):
-            abort(403)
-
-def admin_only(f):
-    @wraps(f)
-    @jwt_required()
-    def wrapper(*args, **kwargs):
-        if not get_jwt().get('is_admin'):
-            abort(403)
-        return f(*args, **kwargs)
-    return wrapper
+# === Initialize AlertManager ===
+alert_manager = AlertManager()
 
 # === Routes ===
 @app.route('/')
 def health_check():
     return jsonify({
         "status": "running",
-        "version": "6.3.2",
-        "bot_thread": bot_manager.thread.is_alive(),
-        "message_queues": {k: v.qsize() for k, v in bot_manager.queues.items()}
+        "version": "6.3.3",
+        "timestamp": datetime.utcnow().isoformat() + "Z"
     })
 
 @app.route('/test-alerts', methods=['GET'])
 def test_alerts():
-    try:
-        token = config.BOTS['empire']
-        chat_id = config.ADMIN_CHAT_ID
-        message = "🔥 EmpireBot Test Alert\nThis is a live test of your Telegram alert system."
-        r = requests.post(
-            f"https://api.telegram.org/bot{token}/sendMessage",
-            json={"chat_id": chat_id, "text": message},
-            timeout=5
-        )
-        return jsonify({"status": "sent", "response": r.json()}), 200
-    except Exception as e:
-        logger.error(f"❌ Telegram alert failed: {e}")
-        return jsonify({"status": "error", "error": str(e)}), 500
-
-@app.route('/debug/telegram', methods=['POST'])
-def debug_telegram():
-    message = "🚨 DEBUG ALERT: Telegram system is working."
-    r = requests.post(
-        f"https://api.telegram.org/bot{config.BOTS['empire']}/sendMessage",
-        json={"chat_id": config.ADMIN_CHAT_ID, "text": message}
+    test_msg = (
+        "\ud83d\udea8 EmpireBot System Test\n"
+        f"Timestamp: {datetime.now().isoformat()}\n"
+        "This confirms your alert system is operational"
     )
-    return jsonify({"status": "debug sent", "telegram": r.json()}), 200
-
-@app.route('/contracts-dashboard')
-def contracts_dashboard():
-    try:
-        contracts_scraped = db.conn.execute("SELECT COUNT(*) FROM contracts").fetchone()[0]
-    except Exception:
-        contracts_scraped = 0
+    result = alert_manager.send(test_msg)
     return jsonify({
-        "current_stage": "Phase 1 - Data Harvesting",
-        "contracts_scraped": contracts_scraped,
-        "alerts": [],
-        "next_steps": [
-            "✅ SAM.gov registration in progress",
-            "✅ WOSB checklist generated",
-            "📄 First proposals generating"
-        ],
-        "timestamp": datetime.utcnow().isoformat() + "Z"
-    })
+        "status": "success" if result.get('ok') else "failed",
+        "bot_response": result,
+        "timestamp": datetime.now().isoformat()
+    }), 200
 
-@app.route('/contracts-panel')
-def contracts_panel():
-    try:
-        contracts = db.conn.execute("""
-            SELECT id, title, source, link, due_date 
-            FROM contracts 
-            WHERE source IS NOT NULL 
-            ORDER BY due_date ASC 
-            LIMIT 20
-        """).fetchall()
-    except Exception as e:
-        logger.error(f"Contract panel error: {e}")
-        contracts = []
-
-    return render_template("contracts.html",
-                           contracts=contracts,
-                           last_updated=datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC'))
-
-@app.route("/health", methods=["GET"])
-def health():
-    return "EmpireBot is online", 200
-
-# === Boot ===
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)))
