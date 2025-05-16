@@ -15,7 +15,7 @@ from queue import Queue
 from datetime import datetime, timedelta
 from functools import wraps
 
-from flask import Flask, request, jsonify, abort, render_template
+from flask import Flask, request, jsonify, abort, render_template, send_file
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -34,10 +34,9 @@ class Config:
         self.ADMIN_PW = os.getenv('ADMIN_PW', 'ChangeMe!')
         self.ADMIN_PW_HASH = self.ADMIN_PW.encode('utf-8')
         self.SHOPIFY_API_SECRET = os.getenv('SHOPIFY_API_SECRET')
-        self.ADMIN_CHAT_ID = os.getenv('ADMIN_CHAT_ID')
-        self.REDIS_URL = os.getenv('REDIS_URL')
+        self.ADMIN_CHAT_ID = os.getenv('ADMIN_CHAT_ID', '1477503070')
         self.BOTS = {
-            'empire': os.getenv('EMPIRE_BOT_TOKEN'),
+            'empire': os.getenv('EMPIRE_BOT_TOKEN', '7538838886:AAGNW4FDClNroOgW2z6tNgPIF3uHw8Ae5NI'),
             'zariah': os.getenv('ZARIAH_BOT_TOKEN'),
             'chatgpt': os.getenv('CHATGPT_BOT_TOKEN'),
             'deepseek': os.getenv('DEEPSEEK_BOT_TOKEN')
@@ -56,11 +55,12 @@ jwt = JWTManager(app)
 
 # === Rate Limiter ===
 try:
-    if config.REDIS_URL and config.REDIS_URL.startswith("redis://"):
+    redis_url = os.getenv('REDIS_URL')
+    if redis_url and redis_url.startswith("redis://"):
         from redis import Redis
-        redis_client = Redis.from_url(config.REDIS_URL)
+        redis_client = Redis.from_url(redis_url)
         redis_client.ping()
-        limiter = Limiter(app=app, key_func=get_remote_address, storage_uri=config.REDIS_URL, strategy="moving-window", default_limits=["500/hour", "50/minute"])
+        limiter = Limiter(app=app, key_func=get_remote_address, storage_uri=redis_url, strategy="moving-window", default_limits=["500/hour", "50/minute"])
         logger.info("✅ Redis rate limiting enabled")
     else:
         raise ValueError("REDIS_URL missing or invalid")
@@ -179,7 +179,6 @@ def health_check():
         "bot_thread": bot_manager.thread.is_alive(),
         "message_queues": {k: v.qsize() for k, v in bot_manager.queues.items()}
     })
-from flask import send_file
 
 @app.route('/admin/backup', methods=['POST'])
 @admin_only
@@ -219,10 +218,32 @@ def contracts_panel():
     except Exception as e:
         logger.error(f"Contract panel error: {e}")
         contracts = []
-    
-    return render_template("contracts.html", 
-                         contracts=contracts,
-                         last_updated=datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC'))
+
+    return render_template("contracts.html",
+                           contracts=contracts,
+                           last_updated=datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC'))
+
+@app.route("/test-alerts", methods=["GET"])
+def test_alerts():
+    message = "🔥 EmpireBot Test Alert\nThis is a live test of your Telegram alert system."
+    r = requests.post(
+        f"https://api.telegram.org/bot{config.BOTS['empire']}/sendMessage",
+        json={"chat_id": config.ADMIN_CHAT_ID, "text": message}
+    )
+    return jsonify({"status": "sent", "telegram": r.json()}), 200
+
+@app.route("/debug/telegram", methods=["POST"])
+def debug_telegram():
+    message = "🚨 DEBUG ALERT: Telegram system is working."
+    r = requests.post(
+        f"https://api.telegram.org/bot{config.BOTS['empire']}/sendMessage",
+        json={"chat_id": config.ADMIN_CHAT_ID, "text": message}
+    )
+    return jsonify({"status": "debug sent", "telegram": r.json()}), 200
+
+@app.route("/health", methods=["GET"])
+def health():
+    return "EmpireBot is online", 200
 
 # === Boot ===
 if __name__ == '__main__':
