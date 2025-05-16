@@ -1,5 +1,4 @@
-# empirebot_prod.py (final version with correct imports and structure)
-
+# empirebot_prod.py
 import os
 import sys
 import json
@@ -7,19 +6,20 @@ import logging
 from pathlib import Path
 from datetime import datetime, timedelta
 
-from flask import Flask, request, jsonify
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt
+from flask import Flask, jsonify
+from flask_jwt_extended import JWTManager
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from prometheus_flask_exporter import PrometheusMetrics
 
-# Fix import paths for deployment
+# Ensure root path is included
 sys.path.insert(0, str(Path(__file__).parent))
 
 try:
-    from alerts.manager import AlertManager  # local
-except ImportError:
-    from src.alerts.manager import AlertManager  # render prod
+    from alerts.manager import AlertManager
+except ImportError as e:
+    print(f"ImportError: {e}")
+    raise
 
 # === Logging ===
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -28,11 +28,7 @@ logger = logging.getLogger(__name__)
 # === Config ===
 class Config:
     def __init__(self):
-        self.SECRET_KEY = os.getenv('SECRET_KEY', os.urandom(32).hex())
         self.JWT_SECRET = os.getenv('JWT_SECRET', os.urandom(32).hex())
-        self.ADMIN_USER = os.getenv('ADMIN_USER', 'admin')
-        self.ADMIN_PW = os.getenv('ADMIN_PW', 'ChangeMe!')
-        self.SHOPIFY_API_SECRET = os.getenv('SHOPIFY_API_SECRET')
         self.ADMIN_CHAT_ID = os.getenv('ADMIN_CHAT_ID', '1477503070')
 
 config = Config()
@@ -49,8 +45,7 @@ try:
     redis_url = os.getenv('REDIS_URL')
     if redis_url and redis_url.startswith("redis://"):
         from redis import Redis
-        redis_client = Redis.from_url(redis_url)
-        redis_client.ping()
+        Redis.from_url(redis_url).ping()
         limiter = Limiter(app=app, key_func=get_remote_address, storage_uri=redis_url)
         logger.info("✅ Redis rate limiting enabled")
     else:
@@ -84,4 +79,3 @@ def test_alerts():
         "bot_response": result,
         "timestamp": datetime.now().isoformat()
     }), 200
-
