@@ -1,4 +1,4 @@
-# empirebot_prod.py
+# empirebot_prod.py (Main App Entry Point)
 
 import os
 import json
@@ -7,15 +7,15 @@ import hmac
 import hashlib
 import logging
 import sqlite3
-import time
 from datetime import datetime, timedelta
-from functools import wraps
 
 from flask import Flask, request, jsonify, abort, render_template
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from prometheus_flask_exporter import PrometheusMetrics
+
+from alerts.manager import AlertManager
 
 # === Logging ===
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -28,63 +28,12 @@ class Config:
         self.JWT_SECRET = os.getenv('JWT_SECRET', os.urandom(32).hex())
         self.ADMIN_USER = os.getenv('ADMIN_USER')
         self.ADMIN_PW = os.getenv('ADMIN_PW', 'ChangeMe!')
-        self.ADMIN_PW_HASH = self.ADMIN_PW.encode('utf-8')
         self.SHOPIFY_API_SECRET = os.getenv('SHOPIFY_API_SECRET')
         self.ADMIN_CHAT_ID = os.getenv('ADMIN_CHAT_ID', '1477503070')
 
-        # Multi-bot fallback support
-        self.BOT_TOKENS = [
-            os.getenv('EMPIRE_BOT_TOKEN'),
-            os.getenv('ZARIAH_BOT_TOKEN'),
-            os.getenv('KEYCONTROL_BOT_TOKEN'),
-            os.getenv('DEEPSEEK_BOT_TOKEN'),
-            os.getenv('CHATGPT_BOT_TOKEN')
-        ]
-
 config = Config()
 
-# === SafeRequest Handler ===
-class SafeRequest:
-    def __init__(self):
-        self.session = requests.Session()
-        self.session.headers.update({'User-Agent': 'EmpireBot/2.0'})
-
-    def post(self, url, payload, max_retries=3, timeout=5):
-        last_error = None
-        for attempt in range(max_retries):
-            try:
-                response = self.session.post(url, json=payload, timeout=timeout)
-                if response.status_code < 500:
-                    return response.json()
-            except Exception as e:
-                last_error = str(e)
-                time.sleep(2 ** attempt)
-        return {"error": "request_failed", "message": last_error, "attempts": max_retries}
-
-# === AlertManager ===
-class AlertManager:
-    def __init__(self):
-        self.http = SafeRequest()
-        self.bots = [token for token in config.BOT_TOKENS if token]
-
-    def send(self, message):
-        for token in self.bots:
-            response = self._send_safe(token, message)
-            if response.get('ok'):
-                return response
-        return {"error": "all_bots_failed"}
-
-    def _send_safe(self, token, message):
-        return self.http.post(
-            f"https://api.telegram.org/bot{token}/sendMessage",
-            {
-                "chat_id": config.ADMIN_CHAT_ID,
-                "text": message,
-                "parse_mode": "HTML"
-            }
-        )
-
-# === Flask App ===
+# === Flask ===
 app = Flask(__name__, template_folder="templates")
 app.config['JWT_SECRET_KEY'] = config.JWT_SECRET
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)
@@ -100,15 +49,13 @@ try:
         from redis import Redis
         redis_client = Redis.from_url(redis_url)
         redis_client.ping()
-        limiter = Limiter(app=app, key_func=get_remote_address, storage_uri=redis_url,
-                          strategy="moving-window", default_limits=["500/hour", "50/minute"])
+        limiter = Limiter(app=app, key_func=get_remote_address, storage_uri=redis_url, strategy="moving-window", default_limits=["500/hour", "50/minute"])
         logger.info("✅ Redis rate limiting enabled")
     else:
         raise ValueError("REDIS_URL missing or invalid")
 except Exception as e:
     logger.warning(f"⚠️ Using in-memory rate limiting: {str(e)}")
-    limiter = Limiter(app=app, key_func=get_remote_address, storage_uri="memory://",
-                      strategy="moving-window", default_limits=["200/hour", "20/minute"])
+    limiter = Limiter(app=app, key_func=get_remote_address, storage_uri="memory://", strategy="moving-window", default_limits=["200/hour", "20/minute"])
 
 # === Metrics ===
 metrics = PrometheusMetrics(app)
@@ -140,5 +87,63 @@ def test_alerts():
         "timestamp": datetime.now().isoformat()
     }), 200
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)))
+
+# alerts/manager.py
+
+import os
+from utils.http import SafeRequest
+
+class AlertManager:
+    def __init__(self):
+        self.http = SafeRequest()
+        self.bots = [
+            os.getenv('EMPIRE_BOT_TOKEN'),
+            os.getenv('ZARIAH_BOT_TOKEN'),
+            os.getenv('KEYCONTROL_BOT_TOKEN')
+        ]
+
+    def send(self, message):
+        for token in filter(None, self.bots):
+            response = self._send_safe(token, message)
+            if response.get('ok'):
+                return response
+        return {"error": "all_bots_failed"}
+
+    def _send_safe(self, token, message):
+        return self.http.post(
+            f"https://api.telegram.org/bot{token}/sendMessage",
+            {
+                "chat_id": os.getenv('ADMIN_CHAT_ID'),
+                "text": message,
+                "parse_mode": "HTML"
+            }
+        )
+
+
+# utils/http.py
+
+import requests
+import time
+from datetime import datetime
+
+class SafeRequest:
+    def __init__(self):
+        self.session = requests.Session()
+        self.session.headers.update({'User-Agent': 'EmpireBot/2.0'})
+
+    def post(self, url, payload, max_retries=3, timeout=5):
+        last_error = None
+        for attempt in range(max_retries):
+            try:
+                response = self.session.post(url, json=payload, timeout=timeout)
+                if response.status_code < 500:
+                    return response.json()
+            except Exception as e:
+                last_error = str(e)
+                time.sleep(2 ** attempt)
+
+        return {
+            "error": "request_failed",
+            "message": last_error,
+            "attempts": max_retries
+        }
