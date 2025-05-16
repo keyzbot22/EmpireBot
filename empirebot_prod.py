@@ -131,15 +131,23 @@ class BotManager:
         self.thread.start()
 
     def _send_message(self, bot, msg):
-        if token := config.BOTS.get(bot):
+        token = config.BOTS.get(bot)
+        chat_id = msg.get("chat_id")
+        text = msg.get("text")
+
+        for attempt in range(3):
             try:
-                requests.post(
-                    f'https://api.telegram.org/bot{token}/sendMessage',
-                    json={'chat_id': msg['chat_id'], 'text': msg['text']},
-                    timeout=3
+                response = requests.post(
+                    f"https://api.telegram.org/bot{token}/sendMessage",
+                    json={"chat_id": chat_id, "text": text},
+                    timeout=5
                 )
+                if response.status_code == 200 and response.json().get("ok"):
+                    logger.info(f"[✓] Telegram message sent (attempt {attempt + 1})")
+                    break
             except Exception as e:
-                logger.error(f'Bot Error [{bot}]: {e}')
+                logger.warning(f"[!] Telegram send failed (attempt {attempt + 1}): {e}")
+                time.sleep(2 ** attempt)
 
     def _process_queues(self):
         while self._running:
