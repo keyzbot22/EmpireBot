@@ -1,6 +1,3 @@
-# from gevent import monkey
-# monkey.patch_all(ssl=False, thread=False)
-
 import os
 import json
 import base64
@@ -36,7 +33,7 @@ class Config:
         self.SHOPIFY_API_SECRET = os.getenv('SHOPIFY_API_SECRET')
         self.ADMIN_CHAT_ID = os.getenv('ADMIN_CHAT_ID', '1477503070')
         self.BOTS = {
-            'empire': os.getenv('EMPIRE_BOT_TOKEN', '7538838886:AAGNW4FDClNroOgW2z6tNgPIF3uHw8Ae5NI'),
+            'empire': os.getenv('EMPIRE_BOT_TOKEN'),
             'zariah': os.getenv('ZARIAH_BOT_TOKEN'),
             'chatgpt': os.getenv('CHATGPT_BOT_TOKEN'),
             'deepseek': os.getenv('DEEPSEEK_BOT_TOKEN')
@@ -256,5 +253,3 @@ def health():
 # === Boot ===
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)))
-
-
