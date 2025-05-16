@@ -1,5 +1,5 @@
-from gevent import monkey
-monkey.patch_all(ssl=False, thread=False)
+# from gevent import monkey
+# monkey.patch_all(ssl=False, thread=False)
 
 import os
 import json
@@ -188,12 +188,30 @@ def health_check():
         "message_queues": {k: v.qsize() for k, v in bot_manager.queues.items()}
     })
 
-@app.route('/admin/backup', methods=['POST'])
-@admin_only
-def backup_db():
-    backup_file = f"backup-{datetime.now().date()}.db"
-    os.system(f"sqlite3 empirebot.db .dump > {backup_file}")
-    return send_file(backup_file, as_attachment=True)
+@app.route('/test-alerts', methods=['GET'])
+def test_alerts():
+    try:
+        token = config.BOTS['empire']
+        chat_id = config.ADMIN_CHAT_ID
+        message = "🔥 EmpireBot Test Alert\nThis is a live test of your Telegram alert system."
+        r = requests.post(
+            f"https://api.telegram.org/bot{token}/sendMessage",
+            json={"chat_id": chat_id, "text": message},
+            timeout=5
+        )
+        return jsonify({"status": "sent", "response": r.json()}), 200
+    except Exception as e:
+        logger.error(f"❌ Telegram alert failed: {e}")
+        return jsonify({"status": "error", "error": str(e)}), 500
+
+@app.route('/debug/telegram', methods=['POST'])
+def debug_telegram():
+    message = "🚨 DEBUG ALERT: Telegram system is working."
+    r = requests.post(
+        f"https://api.telegram.org/bot{config.BOTS['empire']}/sendMessage",
+        json={"chat_id": config.ADMIN_CHAT_ID, "text": message}
+    )
+    return jsonify({"status": "debug sent", "telegram": r.json()}), 200
 
 @app.route('/contracts-dashboard')
 def contracts_dashboard():
@@ -231,24 +249,6 @@ def contracts_panel():
                            contracts=contracts,
                            last_updated=datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC'))
 
-@app.route("/test-alerts", methods=["GET"])
-def test_alerts():
-    message = "🔥 EmpireBot Test Alert\nThis is a live test of your Telegram alert system."
-    r = requests.post(
-        f"https://api.telegram.org/bot{config.BOTS['empire']}/sendMessage",
-        json={"chat_id": config.ADMIN_CHAT_ID, "text": message}
-    )
-    return jsonify({"status": "sent", "telegram": r.json()}), 200
-
-@app.route("/debug/telegram", methods=["POST"])
-def debug_telegram():
-    message = "🚨 DEBUG ALERT: Telegram system is working."
-    r = requests.post(
-        f"https://api.telegram.org/bot{config.BOTS['empire']}/sendMessage",
-        json={"chat_id": config.ADMIN_CHAT_ID, "text": message}
-    )
-    return jsonify({"status": "debug sent", "telegram": r.json()}), 200
-
 @app.route("/health", methods=["GET"])
 def health():
     return "EmpireBot is online", 200
@@ -256,6 +256,5 @@ def health():
 # === Boot ===
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)))
-
 
 
