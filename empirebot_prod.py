@@ -1,37 +1,36 @@
 import os
 import sys
 
-# === DEBUG OUTPUT ===
+# === DEBUG OUTPUT FOR RENDER ===
 print("=== DEBUG INFO ===")
 print("Current directory:", os.getcwd())
 print("Directory contents:", os.listdir('.'))
+print("Parent directory contents:", os.listdir('..'))
 
-parent_dir = os.path.dirname(os.getcwd())
-print("Parent directory contents:", os.listdir(parent_dir))
+# Add both current and parent directories to Python path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# === PATH FIXES ===
-sys.path.insert(0, os.path.abspath('.'))  # Current dir
-sys.path.insert(0, os.path.abspath('..'))  # Parent dir
-
-# === MODULE IMPORT ===
+# Import AlertManager from alerts package
 try:
     from alerts.manager import AlertManager
     print("✅ Successfully imported AlertManager")
 except ImportError as e:
-    print("❌ ImportError:", e)
+    print(f"❌ ImportError: {e}")
     print("sys.path:", sys.path)
 
 # === FLASK APP ===
 from flask import Flask
+
 app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return "✅ EmpireBot is running!"
+    return "EmpireBot is running successfully!"
 
 @app.route('/health')
 def health():
-    return {"status": "ok"}
+    return "OK"
 
 if __name__ == '__main__':
     app.run()
