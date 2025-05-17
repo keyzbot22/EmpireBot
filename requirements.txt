@@ -1,10 +1,7 @@
--e .
 flask
-flask-limiter
-flask-jwt-extended
-prometheus-flask-exporter
-requests
-bcrypt
-gevent
 gunicorn
+gevent
+requests
+python-dotenv
 redis
+itsdangerous
