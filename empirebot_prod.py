@@ -1,7 +1,6 @@
 import os
 import sys
 
-# Debugging output
 print("=== DEBUG INFO ===")
 print("Current directory:", os.getcwd())
 print("Directory contents:", os.listdir('.'))
@@ -9,7 +8,6 @@ print("alerts exists?", os.path.exists('alerts'))
 if os.path.exists('alerts'):
     print("alerts contents:", os.listdir('alerts'))
 
-# Add root to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from alerts.manager import AlertManager
