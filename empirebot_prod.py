@@ -7,19 +7,19 @@ print("Current directory:", os.getcwd())
 print("Directory contents:", os.listdir('.'))
 print("Parent directory contents:", os.listdir('..'))
 
-# Add both current and parent directories to Python path
+# Add current and parent directory to sys.path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# Import AlertManager from alerts package
+# Import AlertManager directly from root-level module
 try:
-    from alerts.manager import AlertManager
+    from alert_manager import AlertManager
     print("✅ Successfully imported AlertManager")
 except ImportError as e:
     print(f"❌ ImportError: {e}")
     print("sys.path:", sys.path)
 
-# === FLASK APP ===
+# === FLASK APP SETUP ===
 from flask import Flask
 
 app = Flask(__name__)
