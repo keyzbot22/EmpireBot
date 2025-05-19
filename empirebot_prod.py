@@ -101,6 +101,16 @@ def latest_proof():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/upload/manual', methods=['POST'])
+def manual_upload():
+    try:
+        file_path = "test_upload.txt"
+        folder_id = os.getenv("DRIVE_TEST_FOLDER_ID")  # Optional
+        file_id, proof = upload_to_drive(file_path, folder_id)
+        return jsonify({"status": "uploaded", "file_id": file_id, "proof": proof})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 # === SHOPIFY WEBHOOKS ===
 def handle_shopify_webhook(webhook_type: str):
     try:
@@ -111,19 +121,19 @@ def handle_shopify_webhook(webhook_type: str):
         data = request.get_json(force=True)
 
         if webhook_type == "orders":
-            AlertManager().send(f"🛒 New Order #{data['id']}\nTotal: ${data['total_price']}")
+            AlertManager().send(f"\U0001F6D2 New Order #{data['id']}\nTotal: ${data['total_price']}")
             return "OK", 200
 
         elif webhook_type == "carts":
-            AlertManager().send(f"🛍️ Cart activity: {data.get('email')}")
+            AlertManager().send(f"\U0001F6CD️ Cart activity: {data.get('email')}")
             return "OK", 200
 
         elif webhook_type == "refunds":
-            AlertManager().send(f"💸 Refund: Order #{data['order_id']}")
+            AlertManager().send(f"\U0001F4B8 Refund: Order #{data['order_id']}")
             return "OK", 200
 
         elif webhook_type == "fulfillments":
-            AlertManager().send(f"📦 Shipped: Order #{data['order_id']}")
+            AlertManager().send(f"\U0001F4E6 Shipped: Order #{data['order_id']}")
             return "OK", 200
 
     except Exception as e:
@@ -193,4 +203,5 @@ def mobile_control():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.getenv("PORT", 5000)))
+
 
