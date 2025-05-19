@@ -1,6 +1,6 @@
 flask==2.0.1
 gunicorn==20.1.0
-requests==2.26.0
+requests==2.32.3  # 🔒 updated for security
 python-dotenv==0.20.0
 redis==4.2.2
 itsdangerous==2.0.1
@@ -11,3 +11,6 @@ google-api-python-client==2.125.0
 google-auth-httplib2==0.2.0
 google-auth-oauthlib==1.2.0
 Send2Trash==1.8.2
+
+# Required for Google API compatibility
+protobuf==7.0.0  # 🔒 updated as recommended
