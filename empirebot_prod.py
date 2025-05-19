@@ -88,6 +88,19 @@ def health():
         "services": ["shopify", "mobile", "alerts", "drive"]
     })
 
+@app.route('/proofs/latest')
+def latest_proof():
+    try:
+        with open("drive_proofs.jsonl", "r") as f:
+            lines = f.readlines()
+            if lines:
+                return jsonify(json.loads(lines[-1]))
+            return jsonify({"status": "No proofs found"}), 404
+    except FileNotFoundError:
+        return jsonify({"error": "Proof log not initialized yet"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 # === SHOPIFY WEBHOOKS ===
 def handle_shopify_webhook(webhook_type: str):
     try:
@@ -180,3 +193,4 @@ def mobile_control():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.getenv("PORT", 5000)))
+
