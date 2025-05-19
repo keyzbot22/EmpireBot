@@ -5,3 +5,9 @@ python-dotenv==0.20.0
 redis==4.2.2
 itsdangerous==2.0.1
 werkzeug==2.0.3
+
+# Google Drive & Cleanup Dependencies
+google-api-python-client==2.125.0
+google-auth-httplib2==0.2.0
+google-auth-oauthlib==1.2.0
+Send2Trash==1.8.2
