@@ -1,0 +1,1994 @@
+2025-06-05 17:00:01,233 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getMe "HTTP/1.1 200 OK"
+2025-06-05 17:00:01,362 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/deleteWebhook "HTTP/1.1 200 OK"
+2025-06-05 17:00:01,364 [INFO] Application started
+2025-06-05 17:00:05,993 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:00:05,995 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:00:11,831 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:00:11,832 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:00:18,868 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:00:18,872 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:00:24,836 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:00:24,838 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:00:33,845 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:00:33,847 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:00:47,443 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:00:47,447 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:01:05,601 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:01:07,337 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:01:07,340 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:01:18,494 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:01:28,651 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:01:29,032 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:01:29,034 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:01:40,174 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:01:50,341 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:01:59,213 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:01:59,217 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:02:10,488 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:02:20,721 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:02:30,973 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:02:34,066 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:02:34,069 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:02:45,304 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:02:55,444 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:03:05,610 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:03:08,665 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:03:08,669 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:03:19,825 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:03:30,163 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:03:40,592 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:03:43,271 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:03:43,273 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:03:54,521 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:04:04,746 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:04:14,897 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:04:17,999 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:04:18,000 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:04:29,182 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:04:39,320 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:04:49,514 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:04:52,597 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:04:52,599 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:05:03,745 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:05:13,903 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:05:24,044 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:05:27,164 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:05:27,165 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:05:38,376 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:05:48,597 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:05:58,749 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:06:01,847 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:06:01,848 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:06:13,067 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:06:23,208 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:06:33,455 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:06:36,644 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:06:36,645 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:06:47,790 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:06:58,020 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:07:08,179 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:07:11,233 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:07:11,234 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:07:22,397 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:07:32,634 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:07:42,778 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:07:45,843 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:07:45,845 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:07:57,008 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:08:07,246 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:08:17,388 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:08:20,426 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:08:20,428 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:08:31,611 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:08:41,863 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:08:52,105 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:08:54,983 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:08:54,985 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:09:06,225 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:09:16,462 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:09:26,713 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:09:29,628 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:09:29,630 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:09:40,836 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:09:50,980 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:10:01,136 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 200 OK"
+2025-06-05 17:10:04,296 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:10:04,297 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:10:08,847 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:10:08,849 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:10:14,646 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:10:14,653 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:10:21,702 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:10:21,704 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:10:30,706 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:10:30,708 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:10:41,888 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:10:41,890 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:10:54,185 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:10:54,190 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:11:10,137 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:11:10,140 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:11:31,768 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:11:31,771 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:12:02,047 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:12:02,050 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:12:36,657 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:12:36,662 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:13:11,270 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:13:11,273 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:13:45,935 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:13:45,937 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-06-05 17:14:20,604 [INFO] HTTP Request: POST https://api.telegram.org/bot7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA/getUpdates "HTTP/1.1 409 Conflict"
+2025-06-05 17:14:20,608 [ERROR] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 115, in network_retry_loop
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_utils/networkloop.py", line 108, in do_action
+    return action_cb_task.result()
+           ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_updater.py", line 335, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 669, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 4601, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 697, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/ext/_extbot.py", line 369, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/_bot.py", line 726, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 197, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/Users/kareemauguste/Documents/EmpireBot/venv/lib/python3.13/site-packages/telegram/request/_baserequest.py", line 355, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
