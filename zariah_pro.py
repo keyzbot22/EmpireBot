@@ -1,48 +1,51 @@
-import os, logging, requests, telegram
+kimport asyncio
+import nest_asyncio
 from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+from telegram.ext import Application, CommandHandler, ContextTypes
 
-BOT_TOKEN = "7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA"
-DEEPSEEK_URL = "http://localhost:8055/scan"
+# Allow nested event loops (required for Mac OS or Jupyter/IDE environments)
+nest_asyncio.apply()
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+# === Command Handlers ===
 
-def escape_markdown(text):
-    escape_chars = r"\_*[]()~`>#+-=|{}.!"
-    return ''.join(f"\\{c}" if c in escape_chars else c for c in str(text))
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE): 
+    await update.message.reply_text("🤖 ZariahBot Activated!")
 
-async def deepseek_scan(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    try:
-        symbol = context.args[0].upper() if context.args else "BTC"
-        logger.info(f"[ZARIAH DEBUG] Scanning: {symbol}")
-        response = requests.post(DEEPSEEK_URL, json={"symbol": symbol}, timeout=10)
-        response.raise_for_status()
-        data = response.json()
+async def profit_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("📊 Today's profits are being calculated...")
 
-        result = (
-            f"*📊 DeepSeek Scan*\n"
-            f"• Symbol: `{escape_markdown(data['symbol'])}`\n"
-            f"• Action: *{escape_markdown(data['action'])}*\n"
-            f"• Confidence: `{data['confidence']}`\n"
-            f"• Time: `{escape_markdown(data['timestamp'])}`\n"
-            f"────────────\n"
-            f"`/trade coinbase {escape_markdown(data['action'].lower())} {escape_markdown(data['symbol'])} 0.01`"
-        )
+async def trade_report(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("📈 Trade report generated.")
 
-        await update.message.reply_text(result, parse_mode=telegram.constants.ParseMode.MARKDOWN_V2)
-        logger.info("[ZARIAH DEBUG] Scan sent")
+async def blast_alert(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("🚨 ALERT: Trigger sent to all systems.")
 
-    except Exception as e:
-        logger.error(f"[ZARIAH ERROR] {e}")
-        await update.message.reply_text("🔴 DeepSeek system error. Check logs.")
+async def restart_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("🔁 Restarting all modules...")
 
-def main():
-    logger.info("🚀 ZariahBot online and listening...")
-    app = ApplicationBuilder().token(BOT_TOKEN).build()
-    app.add_handler(CommandHandler("deepseek", deepseek_scan))
-    app.run_polling()
+async def status(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("✅ System Status: Online\n📡 Bots Linked: Zariah, DeepSeek, EmpireBot, Trading Modules")
 
-if __name__ == "__main__":
-    main()
+async def stress_test(update: Update, context: ContextTypes.DEFAULT_TYPE): 
+    await update.message.reply_text("🔧 Stress test initiated. Running diagnostics...")
+
+# === Main Application ===
+
+async def run_bot():
+    app = Application.builder().token("7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA").build()
+
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("profit_today", profit_today))
+    app.add_handler(CommandHandler("trade_report", trade_report))
+    app.add_handler(CommandHandler("blast", blast_alert))
+    app.add_handler(CommandHandler("restart_all", restart_all))
+    app.add_handler(CommandHandler("status", status))
+    app.add_handler(CommandHandler("stress_test", stress_test))
+
+    print("🚀 ZariahBot is now running in polling mode...")
+    await app.run_polling()
+
+# Entry point
+loop = asyncio.get_event_loop()
+loop.run_until_complete(run_bot())
 
