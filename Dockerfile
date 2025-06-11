@@ -2,6 +2,7 @@
 FROM python:3.11-slim
 
 WORKDIR /app
+
 COPY . .
 
 RUN pip install --no-cache-dir \
@@ -13,6 +14,7 @@ RUN pip install --no-cache-dir \
     google-api-python-client \
     notion-client \
     apscheduler \
-    gspread
+    gspread \
+    nest_asyncio
 
 CMD ["sh", "-c", "uvicorn fastapi_ai:app --host 0.0.0.0 --port 8055 & python zariah_pro.py"]
