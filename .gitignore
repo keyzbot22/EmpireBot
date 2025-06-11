@@ -2,3 +2,4 @@ git push --set-upstream origin main
 .env
 .env
 empirebot.db
+venv/
