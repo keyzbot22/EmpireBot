@@ -1,4 +1,5 @@
-kfrom fastapi import FastAPI, Request
+import asyncio
+from fastapi import FastAPI, Request
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 
@@ -25,4 +26,4 @@ telegram_app.add_handler(CommandHandler("start", start_command))
 @app.on_event("startup")
 async def startup():
     await telegram_app.bot.set_webhook(url=BOT_URL)
-
+    asyncio.create_task(telegram_app.initialize())  # 👈 critical for command handlers
