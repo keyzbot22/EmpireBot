@@ -3,3 +3,6 @@ git push --set-upstream origin main
 .env
 empirebot.db
 venv/
+__pycache__/
+*.pyc
+venv/
