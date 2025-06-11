@@ -13,3 +13,7 @@ async def scan(request: Request):
         'confidence': round(random.uniform(0.7, 0.95), 2),
         'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
+
+@app.get("/health")
+async def health():
+    return {"status": "online"}
