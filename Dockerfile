@@ -1,10 +1,10 @@
-# ✅ Start from an official Python image
+# Use official Python base
 FROM python:3.11-slim
 
 # Set working directory
 WORKDIR /app
 
-# Copy files
+# Copy all files
 COPY . .
 
 # Install dependencies
@@ -20,11 +20,15 @@ RUN pip install --no-cache-dir \
     gspread \
     prometheus-client \
     nest_asyncio \
-    httpx
+    httpx \
+    python-dotenv \
+    schedule \
+    pydantic \
+    openpyxl \
+    fpdf
 
-# Expose port (optional if running FastAPI app)
+# Expose FastAPI port (optional)
 EXPOSE 8000
 
-# Command to run app
-CMD ["python", "main.py"]
-
+# Run the main bot (adjust as needed)
+CMD ["python", "zariah_pro.py"]
