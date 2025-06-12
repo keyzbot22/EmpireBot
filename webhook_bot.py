@@ -2,6 +2,7 @@ import asyncio
 from fastapi import FastAPI, Request
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
+from datetime import datetime
 
 TOKEN = "7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA"
 WEBHOOK_SECRET = "zariah-webhook"
@@ -20,7 +21,7 @@ async def telegram_webhook(request: Request):
 
 @app.get("/health")
 async def health_check():
-    return {"status": "ok", "message": "ZariahBot webhook is alive!"}
+    return {"status": "online", "timestamp": datetime.now().isoformat()}
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Webhook is working!")
@@ -31,9 +32,4 @@ telegram_app.add_handler(CommandHandler("start", start_command))
 async def startup():
     await telegram_app.initialize()
     await telegram_app.bot.set_webhook(url=BOT_URL)
-
-import uvicorn
-
-if __name__ == "__main__":
-    uvicorn.run("webhook_bot:app", host="0.0.0.0", port=8000)
 
