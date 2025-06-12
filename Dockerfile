@@ -27,8 +27,9 @@ RUN pip install --no-cache-dir \
     openpyxl \
     fpdf
 
-# Expose FastAPI port (optional)
+# Expose FastAPI port
 EXPOSE 8000
 
-# Run the main bot (adjust as needed)
-CMD ["python", "zariah_pro.py"]
+# ✅ Run the FastAPI webhook app
+CMD ["uvicorn", "webhook_bot:app", "--host", "0.0.0.0", "--port", "8000"]
+
