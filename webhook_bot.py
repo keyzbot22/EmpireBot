@@ -31,3 +31,9 @@ telegram_app.add_handler(CommandHandler("start", start_command))
 async def startup():
     await telegram_app.initialize()
     await telegram_app.bot.set_webhook(url=BOT_URL)
+
+import uvicorn
+
+if __name__ == "__main__":
+    uvicorn.run("webhook_bot:app", host="0.0.0.0", port=8000)
+
