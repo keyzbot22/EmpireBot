@@ -6,7 +6,7 @@ from telegram.ext import Application, CommandHandler, ContextTypes
 TOKEN = "7329634509:AAG2sydFNeF02HuNYV8L9fDDXZViecXa7uA"
 WEBHOOK_SECRET = "zariah-webhook"
 WEBHOOK_PATH = f"/webhook/{WEBHOOK_SECRET}"
-BOT_URL = f"https://c563-2601-58b-c600-47e0-e5a5-d1a3-5772-3ab6.ngrok.io{WEBHOOK_PATH}"
+BOT_URL = f"https://skillful-energy.up.railway.app{WEBHOOK_PATH}"
 
 app = FastAPI()
 telegram_app = Application.builder().token(TOKEN).build()
@@ -18,6 +18,10 @@ async def telegram_webhook(request: Request):
     await telegram_app.process_update(update)
     return {"ok": True}
 
+@app.get("/health")
+async def health_check():
+    return {"status": "ok", "message": "ZariahBot webhook is alive!"}
+
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Webhook is working!")
 
@@ -25,5 +29,5 @@ telegram_app.add_handler(CommandHandler("start", start_command))
 
 @app.on_event("startup")
 async def startup():
+    await telegram_app.initialize()
     await telegram_app.bot.set_webhook(url=BOT_URL)
-    asyncio.create_task(telegram_app.initialize())  # 👈 critical for command handlers
