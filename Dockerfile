@@ -27,12 +27,11 @@ RUN pip install --no-cache-dir \
     openpyxl \
     fpdf \
     flask==2.3.2 \
-    metaapi-cloud-sdk==9.0.1
+    metaapi-cloud-sdk==9.0.0  # ✅ Fix here
 
 # Expose FastAPI port
 EXPOSE 8000
 
 # ✅ Run the FastAPI webhook app
 CMD ["uvicorn", "webhook_bot:app", "--host", "0.0.0.0", "--port", "8000"]
-
 
