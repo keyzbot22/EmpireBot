@@ -7,12 +7,12 @@ WORKDIR /app
 # Copy all files
 COPY . .
 
-# Install dependencies
+# Install dependencies with relaxed requests version
 RUN pip install --no-cache-dir \
     python-telegram-bot==20.3 \
     fastapi \
     uvicorn==0.23.2 \
-    requests==2.31.0 \
+    requests>=2.24.0,<3.0.0 \  # ✅ Compatible with metaapi-cloud-sdk
     google-auth \
     google-api-python-client \
     notion-client \
@@ -27,11 +27,10 @@ RUN pip install --no-cache-dir \
     openpyxl \
     fpdf \
     flask==2.3.2 \
-    metaapi-cloud-sdk==9.0.0  # ✅ Fix here
+    metaapi-cloud-sdk==9.0.0
 
 # Expose FastAPI port
 EXPOSE 8000
 
-# ✅ Run the FastAPI webhook app
+# Launch FastAPI app
 CMD ["uvicorn", "webhook_bot:app", "--host", "0.0.0.0", "--port", "8000"]
-
