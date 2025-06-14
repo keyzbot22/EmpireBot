@@ -59,16 +59,11 @@ async def deepseek_scan(update: Update, context: ContextTypes.DEFAULT_TYPE):
         response.raise_for_status()
         data = response.json()
         message = (
-            f"*📊 {symbol} Analysis*
-"
-            f"• Action: {data['action']}
-"
-            f"• Confidence: {data['confidence']:.2f}
-"
-            f"• Time: {data['timestamp']}
-"
-            f"────────────
-"
+            f"*📊 {symbol} Analysis*\n"
+            f"• Action: {data['action']}\n"
+            f"• Confidence: {data['confidence']:.2f}\n"
+            f"• Time: {data['timestamp']}\n"
+            f"────────────\n"
             f"`/trade {data['action'].lower()} {symbol} 0.01`"
         )
         await update.message.reply_text(message, parse_mode=constants.ParseMode.MARKDOWN_V2)
