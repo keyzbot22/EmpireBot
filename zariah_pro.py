@@ -8,6 +8,7 @@ from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 from metaapi_cloud_sdk import MetaApi
 from fastapi import FastAPI
 import uvicorn
+import re
 
 class Config:
     BOT_TOKEN = os.getenv("TELEGRAM_TOKEN")
@@ -51,30 +52,54 @@ class TradingBot:
             logger.error(f"Trade execution failed: {e}")
             return None
 
+def escape_md(text):
+    return re.sub(r'([_*\[\]()~`>#+\-=|{}.!])', r'\\\1', text)
+
 async def deepseek_scan(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    symbol = context.args[0].upper() if context.args else "BTC"
+    for attempt in range(3):
+        try:
+            logger.info(f"Scanning {symbol} attempt {attempt + 1}")
+            response = requests.post(Config.DEEPSEEK_URL, json={"symbol": symbol}, timeout=10)
+            response.raise_for_status()
+            data = response.json()
+
+            action = escape_md(data['action'])
+            symbol_escaped = escape_md(symbol)
+
+            message = (
+                f"*📊 {symbol_escaped} Analysis*\n"
+                f"• Action: {action}\n"
+                f"• Confidence: {data['confidence']:.2f}\n"
+                f"• Time: {escape_md(data['timestamp'])}\n"
+                f"────────────\n"
+                f"`/trade {data['action'].lower()} {symbol} 0.01`"
+            )
+            await update.message.reply_text(message, parse_mode=constants.ParseMode.MARKDOWN_V2)
+            return
+        except Exception as e:
+            logger.warning(f"DeepSeek scan attempt {attempt + 1} failed: {e}")
+            await asyncio.sleep(2)
+    await update.message.reply_text("⚠️ DeepSeek scan failed after 3 attempts.")
+
+async def trade_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
-        symbol = context.args[0].upper() if context.args else "BTC"
-        logger.info(f"Scanning symbol: {symbol}")
-        response = requests.post(Config.DEEPSEEK_URL, json={"symbol": symbol}, timeout=10)
-        response.raise_for_status()
-        data = response.json()
-        message = (
-            f"*📊 {symbol} Analysis*\n"
-            f"• Action: {data['action']}\n"
-            f"• Confidence: {data['confidence']:.2f}\n"
-            f"• Time: {data['timestamp']}\n"
-            f"────────────\n"
-            f"`/trade {data['action'].lower()} {symbol} 0.01`"
-        )
-        await update.message.reply_text(message, parse_mode=constants.ParseMode.MARKDOWN_V2)
+        action, symbol, volume = context.args[0], context.args[1], float(context.args[2])
+        bot = TradingBot()
+        result = await bot.execute_trade(symbol, action, volume)
+        if result:
+            await update.message.reply_text(f"✅ Trade executed: {action.upper()} {symbol} ({volume})")
+        else:
+            await update.message.reply_text("❌ Trade failed. Check logs.")
     except Exception as e:
-        logger.error(f"Scan failed: {e}")
-        await update.message.reply_text("⚠️ Scan service unavailable")
+        logger.error(f"Trade command error: {e}")
+        await update.message.reply_text("⚠️ Invalid trade command format. Use `/trade buy BTC 0.01`")
 
 async def start_bot():
     bot = TradingBot()
     app_builder = ApplicationBuilder().token(Config.BOT_TOKEN).build()
     app_builder.add_handler(CommandHandler("deepseek", deepseek_scan))
+    app_builder.add_handler(CommandHandler("trade", trade_command))
     if Config.DEPLOY_MODE == "webhook":
         await app_builder.bot.set_webhook(f"{os.getenv('WEBHOOK_URL')}/telegram")
     else:
