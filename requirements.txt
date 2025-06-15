@@ -8,7 +8,7 @@ charset-normalizer==3.4.2
 frozenlist==1.7.0
 h11==0.16.0
 httpcore==1.0.9
-httpx==0.25.2
+httpx==0.27.2
 idna==3.10
 iso8601==2.1.0
 metaapi_cloud_copyfactory_sdk==11.1.1
