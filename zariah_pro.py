@@ -10,6 +10,7 @@ from fastapi import FastAPI
 import uvicorn
 import re
 
+# Configuration class for env variables
 class Config:
     BOT_TOKEN = os.getenv("TELEGRAM_TOKEN")
     METAAPI_TOKEN = os.getenv("METAAPI_TOKEN")
@@ -18,15 +19,18 @@ class Config:
     DEPLOY_MODE = os.getenv("DEPLOY_MODE", "polling").lower()
     PORT = int(os.getenv("PORT", 8000))
 
+# Logging setup
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("ZariahBot")
 
+# FastAPI app for health check
 app = FastAPI()
 
 @app.get("/health")
 async def health():
     return {"status": "online", "timestamp": datetime.utcnow().isoformat()}
 
+# MetaTrader TradingBot class
 class TradingBot:
     def __init__(self):
         self.metaapi = MetaApi(Config.METAAPI_TOKEN)
@@ -52,9 +56,11 @@ class TradingBot:
             logger.error(f"Trade execution failed: {e}")
             return None
 
+# Markdown escaping for Telegram formatting
 def escape_md(text):
     return re.sub(r'([_*\[\]()~`>#+\-=|{}.!])', r'\\\1', text)
 
+# /deepseek command handler
 async def deepseek_scan(update: Update, context: ContextTypes.DEFAULT_TYPE):
     symbol = context.args[0].upper() if context.args else "BTC"
     for attempt in range(3):
@@ -82,37 +88,10 @@ async def deepseek_scan(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await asyncio.sleep(2)
     await update.message.reply_text("⚠️ DeepSeek scan failed after 3 attempts.")
 
+# /trade command handler
 async def trade_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         action, symbol, volume = context.args[0], context.args[1], float(context.args[2])
         bot = TradingBot()
-        result = await bot.execute_trade(symbol, action, volume)
-        if result:
-            await update.message.reply_text(f"✅ Trade executed: {action.upper()} {symbol} ({volume})")
-        else:
-            await update.message.reply_text("❌ Trade failed. Check logs.")
-    except Exception as e:
-        logger.error(f"Trade command error: {e}")
-        await update.message.reply_text("⚠️ Invalid trade command format. Use `/trade buy BTC 0.01`")
+        result
 
-async def start_bot():
-    bot = TradingBot()
-    app_builder = ApplicationBuilder().token(Config.BOT_TOKEN).build()
-    app_builder.add_handler(CommandHandler("deepseek", deepseek_scan))
-    app_builder.add_handler(CommandHandler("trade", trade_command))
-    if Config.DEPLOY_MODE == "webhook":
-        await app_builder.bot.set_webhook(f"{os.getenv('WEBHOOK_URL')}/telegram")
-    else:
-        await app_builder.run_polling()
-
-if __name__ == "__main__":
-    config = uvicorn.Config(app, host="0.0.0.0", port=Config.PORT, log_level="info")
-    server = uvicorn.Server(config)
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    try:
-        loop.run_until_complete(asyncio.gather(server.serve(), start_bot()))
-    except KeyboardInterrupt:
-        pass
-    finally:
-        loop.close()
