@@ -1,0 +1,13 @@
+2025-06-15 13:14:48,111 - ZariahBot - ERROR - Missing required environment variables
+2025-06-15 13:15:05,367 - ZariahBot - ERROR - Missing required environment variables
+2025-06-15 13:16:59,495 - ZariahBot - ERROR - Missing required environment variables
+2025-06-15 13:16:59,837 - ZariahBot - ERROR - Missing required environment variables
+2025-06-15 13:18:05,629 - ZariahBot - ERROR - Missing required environment variables
+2025-06-16 18:28:32,961 - ZariahBot - ERROR - Missing required environment variables
+2025-06-16 18:30:23,078 - ZariahBot - ERROR - Missing required environment variables
+2025-06-16 18:30:29,395 - ZariahBot - ERROR - Missing required environment variables
+2025-06-16 18:31:46,314 - ZariahBot - ERROR - Missing required environment variables
+2025-06-16 19:15:37,379 - ZariahBot - ERROR - Fatal error: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+2025-06-16 19:15:37,380 - ZariahBot - INFO - Bot service stopped
+2025-06-16 19:36:02,776 - ZariahBot - ERROR - Fatal error: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+2025-06-16 19:36:02,776 - ZariahBot - INFO - Bot service stopped
