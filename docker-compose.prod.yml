@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  zariah:
+    build:
+      context: .
+      dockerfile: Dockerfile.zariah
+    ports:
+      - "8001:8000"
+    restart: always
+
+  vendor:
+    build:
+      context: .
+      dockerfile: Dockerfile.vendor
+    ports:
+      - "8002:8000"
+    restart: always
+
+  trading:
+    build:
+      context: .
+      dockerfile: Dockerfile.trading
+    ports:
+      - "8003:8000"
+    restart: always
+
