@@ -1,10 +1,12 @@
 import asyncio
 import logging
-from fastapi import FastAPI
-from datetime import datetime
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
-from telegram import Update
 import os
+from datetime import datetime
+
+from fastapi import FastAPI
+from fastapi.responses import JSONResponse
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
 # === Setup ===
 BOT_TOKEN = os.getenv("BOT_TOKEN")
@@ -14,24 +16,12 @@ logging.basicConfig(level=logging.INFO)
 
 # === FastAPI Health Check ===
 @app.get("/health")
-def health():
-    return {"status": "alive", "timestamp": datetime.now().isoformat()}
+def health_check():
+    return JSONResponse(content={"status": "ok", "timestamp": datetime.now().isoformat()})
 
-# === Telegram Commands ===
+# === Telegram Command Handlers ===
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("🚀 ZariahBot is live and trading!")
-
-async def remind(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    msg = " ".join(context.args)
-    await update.message.reply_text(f"⏰ Reminder set: {msg}")
-
-async def alert(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    msg = " ".join(context.args)
-    await update.message.reply_text(f"📊 Alert saved: {msg}")
-
-async def trade(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    msg = " ".join(context.args)
-    await update.message.reply_text(f"💹 Trade command received: {msg}")
 
 async def send_vendor(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = " ".join(context.args)
@@ -42,6 +32,16 @@ async def daily(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def upload(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("📤 Upload started.")
+
+# === Optional: Define placeholders for missing commands ===
+async def remind(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("⏰ Reminder set.")
+
+async def alert(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("⚠️ Alert triggered.")
+
+async def trade(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("📈 Trade command received.")
 
 # === Telegram Bot Runner ===
 async def run_bot():
@@ -59,7 +59,7 @@ async def run_bot():
     logger.info("✅ ZariahBot Telegram is live.")
     await application.run_polling()
 
-# === Entrypoint for Uvicorn + Asyncio ===
+# === Entrypoint for Uvicorn Startup ===
 @app.on_event("startup")
 async def on_startup():
     asyncio.create_task(run_bot())
