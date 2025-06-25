@@ -1,43 +1,66 @@
+import asyncio
+import logging
 from fastapi import FastAPI
-from prometheus_client import make_asgi_app, Counter, Gauge
-import os, httpx
 from datetime import datetime
-from telegram import Bot
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+from telegram import Update
+import os
 
+# === Setup ===
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 app = FastAPI()
-metrics_app = make_asgi_app()
-app.mount("/metrics", metrics_app)
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
-REQUEST_COUNT = Counter('app_requests_total', 'Total HTTP Requests')
-HEALTH_CHECK_GAUGE = Gauge('app_health_status', 'Health check status')
-
-TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
-MONITOR_URL = os.getenv("MONITOR_URL")
-
-@app.on_event("startup")
-async def startup_event():
-    await notify_deploy("🚀 EmpireBot deployment started")
-
+# === FastAPI Health Check ===
 @app.get("/health")
-async def health_check():
-    HEALTH_CHECK_GAUGE.set(1)
-    return {"status": "healthy", "timestamp": datetime.utcnow().isoformat(), "version": "1.0.0"}
+def health():
+    return {"status": "alive", "timestamp": datetime.now().isoformat()}
 
-@app.get("/")
-async def root():
-    REQUEST_COUNT.inc()
-    return {"message": "EmpireBot is running!"}
+# === Telegram Commands ===
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("🚀 ZariahBot is live and trading!")
 
-async def notify_deploy(msg: str):
-    if TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID:
-        bot = Bot(token=TELEGRAM_BOT_TOKEN)
-        await bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=msg)
+async def remind(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    msg = " ".join(context.args)
+    await update.message.reply_text(f"⏰ Reminder set: {msg}")
 
-async def verify_uptime():
-    if MONITOR_URL:
-        async with httpx.AsyncClient() as client:
-            try:
-                await client.get(f"{MONITOR_URL}/health")
-            except Exception as e:
-                await notify_deploy(f"⚠️ Uptime check failed: {str(e)}")
+async def alert(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    msg = " ".join(context.args)
+    await update.message.reply_text(f"📊 Alert saved: {msg}")
+
+async def trade(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    msg = " ".join(context.args)
+    await update.message.reply_text(f"💹 Trade command received: {msg}")
+
+async def send_vendor(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    msg = " ".join(context.args)
+    await update.message.reply_text(f"📧 Vendor message queued: {msg}")
+
+async def daily(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("📆 Daily report task triggered.")
+
+async def upload(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("📤 Upload started.")
+
+# === Telegram Bot Runner ===
+async def run_bot():
+    app_builder = ApplicationBuilder().token(BOT_TOKEN)
+    application = app_builder.build()
+
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler("remind", remind))
+    application.add_handler(CommandHandler("alert", alert))
+    application.add_handler(CommandHandler("trade", trade))
+    application.add_handler(CommandHandler("send_vendor", send_vendor))
+    application.add_handler(CommandHandler("daily", daily))
+    application.add_handler(CommandHandler("upload", upload))
+
+    logger.info("✅ ZariahBot Telegram is live.")
+    await application.run_polling()
+
+# === Entrypoint for Uvicorn + Asyncio ===
+@app.on_event("startup")
+async def on_startup():
+    asyncio.create_task(run_bot())
+

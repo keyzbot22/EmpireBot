@@ -1,0 +1,27 @@
+services:
+  zariah:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.zariah
+    ports:
+      - "8001:8000"
+    restart: always
+    env_file: .env
+
+  trading:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.trading
+    ports:
+      - "8002:8000"
+    restart: always
+    env_file: .env
+
+  vendor:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.vendor
+    ports:
+      - "8003:8000"
+    restart: always
+    env_file: .env

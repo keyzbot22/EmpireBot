@@ -1,55 +1,44 @@
+# zariah_pro.py - Clean PTB v20.8 Bot
 import os
 import logging
-import asyncio
-from fastapi import FastAPI
 from dotenv import load_dotenv
-from telegram.ext import ApplicationBuilder, CommandHandler
 from telegram import Update
-from telegram.ext import ContextTypes
-
-# Load .env variables
-load_dotenv()
-
-BOT_TOKEN = os.getenv("TELEGRAM_TOKEN")
-if not BOT_TOKEN:
-    raise EnvironmentError("Missing required environment variable: TELEGRAM_TOKEN")
-
-# Logging setup
-logging.basicConfig(
-    format="%(asctime)s - ZariahBot - %(levelname)s - %(message)s",
-    level=logging.INFO
+from telegram.ext import (
+    ApplicationBuilder,
+    CommandHandler,
+    ContextTypes,
 )
 
-# Telegram command handler
+# Load .env
+load_dotenv()
+
+# Token from environment
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+if not BOT_TOKEN:
+    raise ValueError("Missing BOT_TOKEN in .env file")
+
+# Logging
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
+)
+logger = logging.getLogger(__name__)
+
+# /start command
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("ZariahBot is live and operational! 🚀")
+    await update.message.reply_text("🚀 ZariahBot is live and trading!")
 
-# Build Telegram bot app
-telegram_app = ApplicationBuilder().token(BOT_TOKEN).build()
-telegram_app.add_handler(CommandHandler("start", start))
-
-# FastAPI app (optional, you can remove this if you’re not using the API side)
-app = FastAPI()
-
-@app.get("/health")
-async def health():
-    return {"status": "ok"}
-
-@app.get("/metrics")
-async def metrics():
-    return {"trades_executed": 0, "alerts_sent": 0}  # placeholder
-
-# Async runner for both FastAPI + Telegram
-async def run_all():
-    await telegram_app.initialize()
-    await telegram_app.start()
-    await telegram_app.updater.start_polling()
-    await telegram_app.updater.idle()
-
-# Start everything together if launched directly
-if __name__ == "__main__":
+def main():
     try:
-        asyncio.run(run_all())
-    except (KeyboardInterrupt, SystemExit):
-        logging.info("ZariahBot stopped manually.")
+        app = ApplicationBuilder().token(BOT_TOKEN).build()
+        app.add_handler(CommandHandler("start", start))
+
+        logger.info("ZariahBot is running...")
+        app.run_polling()
+
+    except Exception as e:
+        logger.critical(f"ZariahBot crashed: {str(e)}")
+        raise
+
+if __name__ == "__main__":
+    main()
 
