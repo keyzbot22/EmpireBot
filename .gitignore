@@ -7,3 +7,4 @@ __pycache__/
 *.pyc
 venv/
 service-account.json
+service-account.json
