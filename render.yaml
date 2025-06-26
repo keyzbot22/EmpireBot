@@ -1,0 +1,42 @@
+services:
+  - type: web
+    name: empirebot-zariah
+    repo: https://github.com/keyzbot22/EmpireBot
+    branch: main
+    rootDir: bots/zariah
+    env: docker
+    plan: free
+    envVars:
+      - key: BOT_TOKEN
+        value: your_zariah_token_here
+      - key: PORT
+        value: 8000
+
+  - type: web
+    name: empirebot-vendor
+    repo: https://github.com/keyzbot22/EmpireBot
+    branch: main
+    rootDir: bots/vendor
+    env: docker
+    plan: free
+    envVars:
+      - key: BOT_TOKEN
+        value: your_vendor_token_here
+      - key: PORT
+        value: 8000
+
+  - type: web
+    name: empirebot-trading
+    repo: https://github.com/keyzbot22/EmpireBot
+    branch: main
+    rootDir: bots/trading
+    env: docker
+    plan: free
+    envVars:
+      - key: BOT_TOKEN
+        value: your_trading_token_here
+      - key: ACCOUNT_ID
+        value: your_mt4_or_tradovate_account_id
+      - key: PORT
+        value: 8000
+
