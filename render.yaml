@@ -1,42 +1,25 @@
 services:
-  - type: web
-    name: empirebot-zariah
-    repo: https://github.com/keyzbot22/EmpireBot
-    branch: main
-    rootDir: bots/zariah
-    env: docker
+  - name: empirebot-zariah
+    type: web
+    env: python
     plan: free
-    envVars:
-      - key: BOT_TOKEN
-        value: your_zariah_token_here
-      - key: PORT
-        value: 8000
+    buildCommand: cd bots/zariah && pip install -r ../../requirements.txt
+    startCommand: python zariah_pro.py
+    envVars: []
 
-  - type: web
-    name: empirebot-vendor
-    repo: https://github.com/keyzbot22/EmpireBot
-    branch: main
-    rootDir: bots/vendor
-    env: docker
+  - name: empirebot-vendor
+    type: web
+    env: python
     plan: free
-    envVars:
-      - key: BOT_TOKEN
-        value: your_vendor_token_here
-      - key: PORT
-        value: 8000
+    buildCommand: cd bots/vendor && pip install -r ../../requirements.txt
+    startCommand: python vendor_bot.py
+    envVars: []
 
-  - type: web
-    name: empirebot-trading
-    repo: https://github.com/keyzbot22/EmpireBot
-    branch: main
-    rootDir: bots/trading
-    env: docker
+  - name: empirebot-trading
+    type: web
+    env: python
     plan: free
-    envVars:
-      - key: BOT_TOKEN
-        value: your_trading_token_here
-      - key: ACCOUNT_ID
-        value: your_mt4_or_tradovate_account_id
-      - key: PORT
-        value: 8000
+    buildCommand: cd bots/trading && pip install -r ../../requirements.txt
+    startCommand: python trading_bot.py
+    envVars: []
 
