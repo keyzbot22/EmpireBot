@@ -1,25 +1,17 @@
 services:
-  - name: empirebot-zariah
-    type: web
+  - type: web
+    name: empirebot-trading
     env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port 10000
     plan: free
-    buildCommand: cd bots/zariah && pip install -r ../../requirements.txt
-    startCommand: python zariah_pro.py
-    envVars: []
+    region: oregon
 
-  - name: empirebot-vendor
-    type: web
+  - type: web
+    name: empirebot-zariah
     env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn zariah_pro:app --host 0.0.0.0 --port 10001
     plan: free
-    buildCommand: cd bots/vendor && pip install -r ../../requirements.txt
-    startCommand: python vendor_bot.py
-    envVars: []
-
-  - name: empirebot-trading
-    type: web
-    env: python
-    plan: free
-    buildCommand: cd bots/trading && pip install -r ../../requirements.txt
-    startCommand: python trading_bot.py
-    envVars: []
+    region: oregon
 
