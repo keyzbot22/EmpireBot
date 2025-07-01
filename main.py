@@ -20,9 +20,13 @@ async def startup_event():
     await notify_deploy("🚀 EmpireBot deployment started")
 
 @app.get("/health")
-async def health_check():
+async def health():
     HEALTH_CHECK_GAUGE.set(1)
-    return {"status": "healthy", "timestamp": datetime.utcnow().isoformat(), "version": "1.0.0"}
+    return {
+        "status": "healthy",
+        "timestamp": datetime.utcnow().isoformat(),
+        "version": "v1"
+    }
 
 @app.get("/")
 async def root():
@@ -41,3 +45,4 @@ async def verify_uptime():
                 await client.get(f"{MONITOR_URL}/health")
             except Exception as e:
                 await notify_deploy(f"⚠️ Uptime check failed: {str(e)}")
+
